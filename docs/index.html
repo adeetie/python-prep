@@ -176,6 +176,9 @@ footer{margin-top:40px;color:var(--steel);font-size:12px;font-family:var(--font-
 .toast.crit{background:var(--gold)}
 .toast.show{opacity:1}
 
+#claim{position:fixed;inset:0;z-index:50;background:rgba(1,8,5,.92);display:flex;
+  align-items:center;justify-content:center;padding:20px}
+#claim[hidden]{display:none}
 .flame{display:inline-block;animation:flick 1.1s infinite alternate ease-in-out}
 @keyframes flick{from{transform:scale(1)}to{transform:scale(1.3) rotate(-7deg)}}
 .confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:99;pointer-events:none;animation:fall linear forwards}
@@ -447,7 +450,7 @@ git checkout -b fix/thing-i-noticed</pre></li>
 
 <div class="toast" id="toast" role="status"></div>
 
-<div id="claim" hidden style="position:fixed;inset:0;z-index:50;background:rgba(1,8,5,.92);display:flex;align-items:center;justify-content:center;padding:20px">
+<div id="claim" hidden>
   <div class="card" style="max-width:420px;text-align:center">
     <div class="eyebrow">first things first</div>
     <h2>Who are you?</h2>
