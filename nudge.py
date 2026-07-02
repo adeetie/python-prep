@@ -13,6 +13,7 @@ Standard library only. Reading this file is, obviously, also a mission.
 """
 
 import json
+import os
 import urllib.parse
 import urllib.request
 from datetime import datetime
@@ -26,10 +27,11 @@ TOPICS = {
 
 # Optional WhatsApp via callmebot.com, free for personal use. One-time setup each:
 # save +34 644 71 81 99 as a contact, WhatsApp it "I allow callmebot to send me messages",
-# it replies with your apikey. Fill in below. Empty = skipped, ntfy still fires.
+# it replies with your apikey. Numbers and keys live in repo Actions secrets,
+# never in this public file. Empty = skipped, ntfy still fires.
 WHATSAPP = {
-    "aditi": {"phone": "", "apikey": ""},
-    "ayush": {"phone": "", "apikey": ""},
+    "aditi": {"phone": os.environ.get("WA_ADITI_PHONE", ""), "apikey": os.environ.get("WA_ADITI_KEY", "")},
+    "ayush": {"phone": os.environ.get("WA_AYUSH_PHONE", ""), "apikey": os.environ.get("WA_AYUSH_KEY", "")},
 }
 
 MISSED_CONTRACT = [
