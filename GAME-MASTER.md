@@ -1,6 +1,6 @@
 # Game-master notes 🎲
 
-Either player can run a week. The game-master still plays, still sweats, still owes chai when losing.
+Either player can run a week. The game-master still plays, still sweats, still owes whatever the winner decides when losing. Current going rate: one ride.
 
 ## Where to mine real code for missions
 

@@ -23,8 +23,9 @@ Missions, standings, dares, the meme wall, the vault. Everything.
    ```
 4. **Compare, roast, learn.** One question over chai: "why did you do it that way?"
    That conversation is the actual course material.
-5. **Close the week** in the playground. Winner writes one dare. Loser completes it.
-   The constitution is one sentence long and it is merciless.
+5. **Close the week** in the playground. Winner writes one dare, loser completes it.
+   A ride, a treat, whatever the winner decides. The constitution is one sentence
+   long and it is merciless.
 
 ## The stakes
 

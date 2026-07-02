@@ -69,7 +69,7 @@ PAGE_TOP = """<!DOCTYPE html>
 """
 
 PAGE_BOTTOM = """</main>
-<footer>two coders · one repo · loser buys chai</footer>
+<footer>two coders · one repo · loser owes the winner</footer>
 <script>
 const CODES = __CODES__;
 const FILES = __FILES__;

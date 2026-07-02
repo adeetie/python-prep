@@ -16,9 +16,9 @@ tokens for color, laws for language.
    "dive into", "seamlessly", "empower", "elevate", "delve". If a sentence could
    caption a LinkedIn post, kill it and write what a funny friend would say.
 
-3. **Human, witty, sarcastic, a little flirty-fun.** Dry sarcasm, poker face,
-   playful teasing. Warmth under every roast. Strictly platonic, always kind
-   underneath, and each line sounds like a sharp friend talking.
+3. **Human, witty, sarcastic, playful.** Dry sarcasm, poker face, best-friend
+   teasing. Warmth under every roast, kindness underneath everything, and each
+   line sounds like a sharp friend talking.
 
 4. **Zero em dashes.** Commas, periods, or a fresh sentence. An em dash is a tell.
 
