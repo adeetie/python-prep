@@ -16,7 +16,7 @@
   --text:#FAF9F7;
   --muted:#7A9A8A;
   --steel:#567765;
-  --green:#12703E;
+  --green:#0C5530;
   --sage:#628F4B;
   --gold:#C2A455;
   --maroon:#5E1A21;
@@ -81,7 +81,7 @@ h3{font-size:15px;font-weight:500}
 .pcard .streak{font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:4px}
 .vs{font-family:var(--font-m);font-weight:700;color:var(--maroonSoft);font-size:14px}
 .tug{height:18px;border-radius:var(--r-btn);background:var(--surface);box-shadow:var(--neu-in);overflow:hidden;display:flex}
-.tug .a{background:linear-gradient(90deg,#0B4225,var(--green));transition:width .5s ease;position:relative;overflow:hidden}
+.tug .a{background:linear-gradient(90deg,#073019,var(--green));transition:width .5s ease;position:relative;overflow:hidden}
 .tug .a::after{content:"";position:absolute;inset:0;
   background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);animation:shimmer 2.6s infinite}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
@@ -279,20 +279,20 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card plan">
     <div class="eyebrow">this week's contract</div>
     <h2>When exactly are you coding?</h2>
-    <p class="sub">Vague plans die quiet deaths. Write the day and the hour. The other player holds lifetime rights to bring this up at dinner.</p>
+    <p class="sub">Write the exact day and time you'll code this week. Vague plans die, written ones survive, mostly because the other player will remind you. Forever.</p>
     <br>
-    <input id="plan-input" placeholder='e.g. "Tue + Thu, 9pm, one mission minimum. likh ke de raha hoon."' onchange="savePlan(this.value)">
+    <input id="plan-input" placeholder='e.g. "Tue + Thu, 9pm, one mission minimum"' onchange="savePlan(this.value)">
   </div>
 
   <div class="card">
-    <div class="eyebrow">designed by a psychologist. yes, on purpose. escape is billable.</div>
+    <div class="eyebrow">why this works · designed by a psychologist, on purpose</div>
     <div class="psych">
-      <div><b>streaks · loss aversion</b>Losing a streak hurts about twice as much as winning feels good. That's the engine of this whole playground, straight from your brain's own wiring.</div>
-      <div><b>teach-back · retrieval practice</b>Explaining your code out loud pays bonus points because pulling knowledge OUT of your head beats putting it in. Every study ever. Fight the science, lose to the science.</div>
-      <div><b>jackpots · variable reward</b>Sometimes a mission randomly pays extra. You know as much about when as the pigeons did. Worked on them too.</div>
-      <div><b>the contract · implementation intention</b>"Tuesday, 9pm" happens. "I'll code more" has a perfect record of never happening, in the entire history of the sentence.</div>
-      <div><b>GG notes · respect economy</b>Claiming a win costs one honest compliment about the rival's work. Rivalry with respect compounds. Pure trash talk decays. We deal in compound interest here.</div>
-      <div><b>real stakes · skin in the game</b>Points become actual rupees. Broken streaks become actual debts. Anything less is a to-do list wearing a costume.</div>
+      <div><b>streaks</b>Your brain hates losing a streak about twice as much as it enjoys winning. So the streak protects itself. Keep it alive.</div>
+      <div><b>teach-back, +5</b>Explain your solved mission out loud to the rival, earn 5 extra points. Saying it aloud locks it into memory better than any re-reading. Old trick, works every time.</div>
+      <div><b>jackpots</b>Some missions randomly pay extra. You never know which one. That little "maybe" is exactly what makes games fun. Yes, it's working on you right now.</div>
+      <div><b>the contract</b>A plan with a day and a time actually happens. "I'll code more" never has, in recorded history. Write the time above.</div>
+      <div><b>GG notes</b>To claim a dare win, first say one honest good thing about the rival's work. Keeps the rivalry sharp and the friendship sharper.</div>
+      <div><b>real stakes</b>Points become real rupees. Lost weeks become real dares. Real stakes keep both of us honest.</div>
     </div>
   </div>
 </section>
@@ -690,7 +690,7 @@ function toast(msg,crit=false){const t=document.getElementById("toast");t.textCo
 const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
 function confetti(n=40){
   if(calm())return;
-  const colors=["#12703E","#C2A455","#C27672","#628F4B","#FAF9F7"];
+  const colors=["#0C5530","#C2A455","#C27672","#628F4B","#FAF9F7"];
   for(let i=0;i<n;i++){const c=document.createElement("div");c.className="confetti";
     c.style.left=Math.random()*100+"vw";c.style.background=colors[i%colors.length];
     c.style.animationDuration=(2.2+Math.random()*1.8)+"s";c.style.animationDelay=Math.random()*.4+"s";
@@ -730,7 +730,7 @@ async function memeBreak(){
   const img=document.getElementById("meme-img"),cap=document.getElementById("meme-cap");
   cap.textContent="summoning…";
   try{img.src=await fetchGif(q);img.hidden=false;
-    cap.textContent="“"+q+"” · courtesy of the internet, curated by fate";}
+    cap.textContent="“"+q+"” · fresh from the internet";}
   catch(e){cap.textContent="The memes are buffering. Even chaos has network days.";}
 }
 async function cheerGif(){

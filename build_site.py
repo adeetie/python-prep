@@ -27,7 +27,7 @@ PAGE_TOP = """<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@1,300&display=swap" rel="stylesheet">
 <style>
   :root{color-scheme:dark;--bg:#000000;--card:#000604;--surface:#000403;--text:#FAF9F7;--muted:#7A9A8A;
-        --green:#12703E;--gold:#C2A455;--maroon:#5E1A21;--border:rgba(143,175,159,.10);
+        --green:#0C5530;--gold:#C2A455;--maroon:#5E1A21;--border:rgba(143,175,159,.10);
         --neu:8px 8px 18px rgba(0,0,0,.75),-6px -6px 14px rgba(18,112,62,.04)}
   *{box-sizing:border-box;margin:0}
   body{background:var(--bg);color:var(--text);font-family:'Courier Prime','Courier New',monospace;line-height:1.6}
