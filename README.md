@@ -41,15 +41,13 @@ To turn it on, once, in the GitHub repo settings:
 
 After that, every push updates the scoreboard at `https://<username>.github.io/speak-then-spell/`.
 
-## Setup for player 2 (that's you, Mission)
+## Setup for player 2 (that's you, Ayush)
 
 ```bash
 git clone <this-repo-url>
 cd speak-then-spell
-# your folder is already waiting: playgrounds/week-01-the-walrus-hunt/solutions/mission/
+# your folder is already waiting: playgrounds/week-01-the-walrus-hunt/solutions/ayush/
 ```
-
-Yes — every challenge file is called `MISSION.md`. Named after you. Obviously. 😌
 
 ## Reference shelf
 
