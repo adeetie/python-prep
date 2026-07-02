@@ -15,8 +15,3 @@ jobs:
         with:
           python-version: "3.12"
       - run: python nudge.py
-        env:
-          WA_ADITI_PHONE: ${{ secrets.WA_ADITI_PHONE }}
-          WA_ADITI_KEY: ${{ secrets.WA_ADITI_KEY }}
-          WA_AYUSH_PHONE: ${{ secrets.WA_AYUSH_PHONE }}
-          WA_AYUSH_KEY: ${{ secrets.WA_AYUSH_KEY }}

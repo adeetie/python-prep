@@ -13,8 +13,6 @@ Standard library only. Reading this file is, obviously, also a mission.
 """
 
 import json
-import os
-import urllib.parse
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -25,14 +23,6 @@ TOPICS = {
     "ayush": "speak-then-spell-moai-man",
 }
 
-# Optional WhatsApp via callmebot.com, free for personal use. One-time setup each:
-# save +34 644 71 81 99 as a contact, WhatsApp it "I allow callmebot to send me messages",
-# it replies with your apikey. Numbers and keys live in repo Actions secrets,
-# never in this public file. Empty = skipped, ntfy still fires.
-WHATSAPP = {
-    "aditi": {"phone": os.environ.get("WA_ADITI_PHONE", ""), "apikey": os.environ.get("WA_ADITI_KEY", "")},
-    "ayush": {"phone": os.environ.get("WA_AYUSH_PHONE", ""), "apikey": os.environ.get("WA_AYUSH_KEY", "")},
-}
 
 MISSED_CONTRACT = [
     "You picked today yourself. The contract remembers. So do I.",
@@ -54,11 +44,6 @@ KEPT = [
     "Showed up on your promised day. The clock has nothing on you. Today.",
 ]
 OVERDUE = "A dare is past its deadline: {title}. The clock saw everything. So did the ledger."
-
-
-def send_whatsapp(phone: str, apikey: str, message: str) -> None:
-    q = urllib.parse.urlencode({"phone": phone, "text": message, "apikey": apikey})
-    urllib.request.urlopen(f"https://api.callmebot.com/whatsapp.php?{q}", timeout=15)
 
 
 def send(topic: str, title: str, message: str) -> None:
@@ -102,12 +87,6 @@ def main() -> None:
             note = QUIET[seed % len(QUIET)]
 
         send(topic, f"speak-then-spell · {mine} pts this week", note)
-        wa = WHATSAPP.get(player, {})
-        if wa.get("phone") and wa.get("apikey"):
-            try:
-                send_whatsapp(wa["phone"], wa["apikey"], f"speak-then-spell · {mine} pts this week · {note}")
-            except Exception as e:
-                print(f"whatsapp skipped for {player}: {e}")
         print(f"nudged {player} → {topic}")
 
 
