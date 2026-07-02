@@ -24,38 +24,38 @@ PAGE_TOP = """<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>speak-then-spell — weekly missions</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono&family=IBM+Plex+Serif:ital,wght@1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@1,300&display=swap" rel="stylesheet">
 <style>
-  :root{color-scheme:dark;--bg:#010805;--card:#051A12;--surface:#041410;--text:#FAF9F7;--muted:#8FAF9F;
-        --green:#2FBF71;--gold:#EDD48A;--maroon:#8E2A35;--border:rgba(143,175,159,.14);
-        --neu:8px 8px 18px rgba(0,0,0,.55),-6px -6px 14px rgba(47,191,113,.05)}
+  :root{color-scheme:dark;--bg:#000000;--card:#000604;--surface:#000403;--text:#FAF9F7;--muted:#7A9A8A;
+        --green:#12703E;--gold:#C2A455;--maroon:#5E1A21;--border:rgba(143,175,159,.10);
+        --neu:8px 8px 18px rgba(0,0,0,.75),-6px -6px 14px rgba(18,112,62,.04)}
   *{box-sizing:border-box;margin:0}
-  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.6}
+  body{background:var(--bg);color:var(--text);font-family:'Courier Prime','Courier New',monospace;line-height:1.6}
   header{padding:3rem 1.5rem 1.5rem;text-align:center}
   header h1{font-size:2rem}
   header p{color:var(--muted);font-family:'IBM Plex Serif',serif;font-style:italic}
   header a{color:var(--green)}
-  main{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem}
+  main{width:100%;margin:0 auto;padding:0 1.75rem 4rem}
   .week{background:var(--card);border:1px solid var(--border);border-radius:24px;
         padding:1.5rem;margin-bottom:2rem;box-shadow:var(--neu)}
   .week h2{color:var(--green);margin-bottom:1rem}
   .solutions{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem}
   .player{min-width:0}
-  .player h3{font-family:'JetBrains Mono',monospace;font-size:.8rem;text-transform:uppercase;
+  .player h3{font-family:'Courier Prime',monospace;font-size:.8rem;text-transform:uppercase;
              letter-spacing:.1em;color:var(--gold);margin-bottom:.5rem}
-  pre{background:#04120D;color:#CFE8DB;padding:1rem;border-radius:12px;overflow-x:auto;
-      font-family:'JetBrains Mono',monospace;font-size:.75rem;max-height:480px;border:1px solid var(--border)}
+  pre{background:#000302;color:#CFE8DB;padding:1rem;border-radius:12px;overflow-x:auto;
+      font-family:'Courier Prime',monospace;font-size:.75rem;max-height:480px;border:1px solid var(--border)}
   .empty{color:var(--muted);font-style:italic;padding:1.2rem;border:2px dashed var(--maroon);
          border-radius:12px;text-align:center;font-family:'IBM Plex Serif',serif}
   .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:.5rem 0 1rem}
-  .run{background:var(--green);color:var(--bg);border:0;border-radius:10px;padding:8px 16px;
-       font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;
+  .run{background:var(--green);color:var(--text);border:0;border-radius:10px;padding:8px 16px;
+       font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Courier Prime',monospace;
        transition:transform .12s ease}
   .run:hover{transform:translateY(-2px)}
   .out{background:#000;color:#9fe8c3;min-height:2rem}
   .out[hidden]{display:none}
   footer{text-align:center;color:var(--muted);padding:2rem;font-size:.85rem;
-         font-family:'JetBrains Mono',monospace}
+         font-family:'Courier Prime',monospace}
 </style>
 </head>
 <body>

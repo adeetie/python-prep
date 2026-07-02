@@ -5,44 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>speak-then-spell, the playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 <style>
 /* ── Quietly workspace DNA, recolored: near-black green void, maroon reserved for damage ── */
 :root{
   color-scheme:dark;
-  --bg:#010805;
-  --surface:#041410;
-  --card:#051A12;
+  --bg:#000000;
+  --surface:#000403;
+  --card:#000604;
   --text:#FAF9F7;
-  --muted:#8FAF9F;
-  --steel:#6E9483;
-  --green:#2FBF71;
-  --sage:#90BE6D;
-  --gold:#EDD48A;
-  --maroon:#8E2A35;
-  --maroonSoft:#E8938F;
-  --border:rgba(143,175,159,.14);
-  --borderEm:rgba(143,175,159,.32);
-  --morph1:rgba(250,249,247,.012);
-  --morph3:rgba(250,249,247,.035);
-  --morph4:rgba(250,249,247,.05);
+  --muted:#7A9A8A;
+  --steel:#567765;
+  --green:#12703E;
+  --sage:#628F4B;
+  --gold:#C2A455;
+  --maroon:#5E1A21;
+  --maroonSoft:#C27672;
+  --border:rgba(143,175,159,.10);
+  --borderEm:rgba(143,175,159,.25);
+  --morph1:rgba(250,249,247,.008);
+  --morph3:rgba(250,249,247,.02);
+  --morph4:rgba(250,249,247,.03);
   --r-card:24px; --r-md:12px; --r-btn:10px; /* sharp rounded rects, zero pills */
-  --font-d:'Space Grotesk',system-ui,sans-serif;
-  --font-m:'JetBrains Mono',ui-monospace,monospace;
+  --font-d:'Courier Prime','Courier New',monospace;
+  --font-m:'Courier Prime',ui-monospace,monospace;
   --font-s:'IBM Plex Serif',Georgia,serif;
-  --neu:8px 8px 18px rgba(0,0,0,.55),-6px -6px 14px rgba(47,191,113,.05),inset 0 1px 0 rgba(255,255,255,.04);
-  --neu-in:inset 5px 5px 12px rgba(0,0,0,.5),inset -4px -4px 10px rgba(47,191,113,.04);
+  --neu:8px 8px 18px rgba(0,0,0,.75),-6px -6px 14px rgba(18,112,62,.04),inset 0 1px 0 rgba(255,255,255,.025);
+  --neu-in:inset 5px 5px 12px rgba(0,0,0,.7),inset -4px -4px 10px rgba(18,112,62,.03);
 }
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--text);font-family:var(--font-d);line-height:1.55;min-height:100vh}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(60% 40% at 50% -5%,rgba(47,191,113,.09),transparent 70%)}
+  background:radial-gradient(60% 40% at 50% -5%,rgba(18,112,62,.04),transparent 70%)}
 a{color:var(--green)}
 button{font-family:var(--font-d);cursor:pointer}
 :focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:20px 20px 80px}
+.wrap{position:relative;z-index:1;width:100%;margin:0 auto;padding:20px 28px 80px}
 
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0 20px}
 .wordmark{font-family:var(--font-m);font-size:13px;color:var(--muted);letter-spacing:.12em}
@@ -50,7 +50,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .whoami{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:12px;color:var(--muted)}
 .whoami button{background:var(--card);color:var(--muted);border:1px solid var(--border);
   border-radius:var(--r-btn);padding:6px 14px;font-family:var(--font-m);font-size:12px;box-shadow:var(--neu)}
-.whoami button.on{color:var(--bg);background:var(--green);border-color:var(--green);font-weight:700}
+.whoami button.on{color:var(--text);background:var(--green);border-color:var(--green);font-weight:700}
 
 .roast{font-family:var(--font-s);font-style:italic;font-weight:300;color:var(--muted);
   font-size:17px;padding:14px 20px;border-left:2px solid var(--maroon);margin-bottom:24px;background:var(--morph1)}
@@ -58,7 +58,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
 nav button{background:var(--surface);border:1px solid var(--border);color:var(--muted);
   padding:10px 18px;border-radius:var(--r-btn);font-size:13px;font-weight:500;box-shadow:var(--neu)}
-nav button.on{color:var(--bg);background:var(--green);border-color:var(--green);font-weight:700;box-shadow:none}
+nav button.on{color:var(--text);background:var(--green);border-color:var(--green);font-weight:700;box-shadow:none}
 
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);
   padding:22px;box-shadow:var(--neu);margin-bottom:18px}
@@ -81,11 +81,11 @@ h3{font-size:15px;font-weight:500}
 .pcard .streak{font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:4px}
 .vs{font-family:var(--font-m);font-weight:700;color:var(--maroonSoft);font-size:14px}
 .tug{height:18px;border-radius:var(--r-btn);background:var(--surface);box-shadow:var(--neu-in);overflow:hidden;display:flex}
-.tug .a{background:linear-gradient(90deg,#1d7a49,var(--green));transition:width .5s ease;position:relative;overflow:hidden}
+.tug .a{background:linear-gradient(90deg,#0B4225,var(--green));transition:width .5s ease;position:relative;overflow:hidden}
 .tug .a::after{content:"";position:absolute;inset:0;
   background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);animation:shimmer 2.6s infinite}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-.tug .b{background:linear-gradient(90deg,#5c1d25,var(--maroon));flex:1}
+.tug .b{background:linear-gradient(90deg,#3E1015,var(--maroon));flex:1}
 .tuglabel{display:flex;justify-content:space-between;font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:6px}
 .verdict{text-align:center;font-family:var(--font-s);font-style:italic;color:var(--muted);margin-top:14px;font-size:15px}
 
@@ -118,7 +118,7 @@ h3{font-size:15px;font-weight:500}
 .qbody .learnhint{font-family:var(--font-m);font-size:12px;color:var(--sage);background:var(--morph3);
   border-radius:8px;padding:10px 12px;margin:10px 0}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.btn{background:var(--green);color:var(--bg);border:0;border-radius:var(--r-btn);padding:9px 18px;font-weight:700;font-size:13px;
+.btn{background:var(--green);color:var(--text);border:0;border-radius:var(--r-btn);padding:9px 18px;font-weight:700;font-size:13px;
   text-decoration:none;display:inline-block;transition:transform .12s ease,filter .12s ease}
 .btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.12)}
 .btn:active:not(:disabled){transform:scale(.95)}
@@ -171,14 +171,26 @@ details.guide pre{background:var(--surface);box-shadow:var(--neu-in);border-radi
 .psych b{color:var(--sage);display:block;font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
 
 footer{margin-top:40px;color:var(--steel);font-size:12px;font-family:var(--font-m);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--bg);
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--text);
   font-weight:700;padding:12px 22px;border-radius:var(--r-btn);opacity:0;pointer-events:none;transition:opacity .3s;z-index:90}
-.toast.crit{background:var(--gold)}
+.toast.crit{background:var(--gold);color:#141005}
 .toast.show{opacity:1}
 
-#claim{position:fixed;inset:0;z-index:50;background:rgba(1,8,5,.92);display:flex;
+#claim,#ask{position:fixed;inset:0;z-index:50;background:rgba(0,3,2,.94);display:flex;
   align-items:center;justify-content:center;padding:20px}
-#claim[hidden]{display:none}
+#claim[hidden],#ask[hidden]{display:none}
+#ask .card{max-width:460px;width:100%}
+#ask p{white-space:pre-line}
+#ask textarea{width:100%;margin-top:12px;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);border-radius:var(--r-md);padding:10px 14px;font-size:14px;
+  font-family:var(--font-d);box-shadow:var(--neu-in);min-height:56px;resize:vertical}
+.form input{accent-color:var(--green)}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator{filter:invert(.6) sepia(1) saturate(3) hue-rotate(90deg);cursor:pointer}
+#tour{border:1px solid var(--border);border-radius:var(--r-md);background:var(--morph1)}
+#tour summary{padding:14px 16px;cursor:pointer;font-weight:700}
+#tour ol{padding:0 18px 16px 36px;color:var(--muted);font-size:14px}
+#tour li{margin-bottom:8px}
+#tour b{color:var(--text)}
 .flame{display:inline-block;animation:flick 1.1s infinite alternate ease-in-out}
 @keyframes flick{from{transform:scale(1)}to{transform:scale(1.3) rotate(-7deg)}}
 .confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:99;pointer-events:none;animation:fall linear forwards}
@@ -217,6 +229,19 @@ section[id^=tab-]{animation:enter .3s ease}
 
 <!-- ═══ STANDINGS ═══ -->
 <section id="tab-standings">
+  <div class="card">
+    <details id="tour">
+      <summary>🧭 New here? The 30-second tour. Ayush, this means you.</summary>
+      <ol>
+        <li><b>Missions tab</b>: pick a problem, build it in Python on your machine, come back, press <b>"I built it"</b>. Points land instantly.</li>
+        <li><b>The bar above</b> keeps the lifetime score. The <b>weekly battle card</b> below counts this week only. Close the week with the button: winner writes one dare, loser completes it. A ride, a treat, winner's imagination.</li>
+        <li><b>Dares tab</b>: challenge each other anytime, with a deadline and points on the table.</li>
+        <li><b>The Kitchen</b>: when the menu bores you, invent your own missions and serve them.</li>
+        <li><b>The Vault</b>: points become actual rupees. 1 point = ₹2.5, cash in as a gift or UPI. The house always pays.</li>
+        <li><b>Once, in the footer</b>: press "link the shared notebook" so everything you do saves itself to our repo. Weekly mission code gets pushed to the repo, and <a href="scoreboard.html">the scoreboard</a> shows both solutions side by side, running live in the page.</li>
+      </ol>
+    </details>
+  </div>
   <div class="card">
     <div class="eyebrow">the eternal question</div>
     <h1>Who is winning?</h1>
@@ -440,15 +465,27 @@ git checkout -b fix/thing-i-noticed</pre></li>
 <footer>
   <span>© the two of us · <a href="scoreboard.html">weekly scoreboard →</a> · <span id="sync-dot">notebook: sleeping</span></span>
   <span>
-    <button class="btn ghost" onclick="linkNotebook()">🔗 link the shared notebook</button>
-    <button class="btn ghost" onclick="exportState()">🫙 bottle our progress</button>
-    <button class="btn ghost" onclick="document.getElementById('importer').click()">🍾 pour it back in</button>
+    <button class="btn" onclick="linkNotebook()">🔗 Turn on auto-save</button>
+    <button class="btn" onclick="exportState()">⬇️ Save progress to file</button>
+    <button class="btn" onclick="document.getElementById('importer').click()">⬆️ Load progress from file</button>
     <input type="file" id="importer" accept=".json" hidden onchange="importState(this)">
   </span>
 </footer>
 </div>
 
 <div class="toast" id="toast" role="status"></div>
+
+<div id="ask" hidden>
+  <div class="card">
+    <div class="eyebrow">the house asks</div>
+    <p class="sub" id="ask-text"></p>
+    <textarea id="ask-input" hidden></textarea>
+    <div class="btnrow" style="justify-content:flex-end;margin-top:14px">
+      <button class="btn ghost" id="ask-no" onclick="askDone(false)">Never mind</button>
+      <button class="btn" id="ask-yes" onclick="askDone(true)">Done</button>
+    </div>
+  </div>
+</div>
 
 <div id="claim" hidden>
   <div class="card" style="max-width:420px;text-align:center">
@@ -560,12 +597,13 @@ function renderWeek(){
     <div class="stat"><div class="big">${a}</div><div class="lab">aditi, this week</div></div>
     <div class="stat"><div class="big">${b}</div><div class="lab">ayush, this week</div></div>`;
 }
-function settleWeek(){
+async function settleWeek(){
   const a=S.week.aditi||0,b=S.week.ayush||0;
   if(a===0&&b===0)return toast("Close an empty week? Bold. Earn something first, both of you.");
   if(a===b){toast("A tie. The universe refuses to pick a favorite. Week rolls on.");return;}
   const win=a>b?"aditi":"ayush",lose=a>b?"ayush":"aditi";
-  if(!confirm(`Close the week? ${win} wins ${Math.max(a,b)} to ${Math.min(a,b)}. ${lose} owes a dare, written by ${win}, savored by ${win}.`))return;
+  const ok=await ask(`Close the week? ${win} wins ${Math.max(a,b)} to ${Math.min(a,b)}. ${lose} owes a dare, written by ${win}, savored by ${win}.`,{yes:"Crown the winner",no:"Week rolls on"});
+  if(!ok)return;
   S.ledger.unshift({who:lose,what:`WEEKLY BATTLE LOST ${Math.min(a,b)}–${Math.max(a,b)}, ${win} writes the dare, completion mandatory`,rupees:0,when:new Date().toLocaleDateString()});
   S.week={aditi:0,ayush:0};
   save();confetti(70);cheerGif();renderAll();
@@ -576,24 +614,47 @@ let intent=Object.keys(INTENTS)[0];
 if(!localStorage.getItem("sts-me"))addEventListener("DOMContentLoaded",()=>document.getElementById("claim").hidden=false);
 function claimIdentity(who){
   me=who;localStorage.setItem("sts-me",who);
-  document.getElementById("claim").hidden=true;renderAll();
+  document.getElementById("claim").hidden=true;
+  document.getElementById("tour").open=true;
+  renderAll();
   toast(`Welcome, ${who}. This device knows you now. Very committed of you.`);
+}
+
+/* themed stand-in for prompt() and confirm(), house colors only */
+let askResolve=null;
+function ask(text,opts={}){
+  const{input=false,value="",yes="Done",no="Never mind"}=opts;
+  document.getElementById("ask-text").textContent=text;
+  const inp=document.getElementById("ask-input");
+  inp.hidden=!input;inp.value=value;
+  document.getElementById("ask-yes").textContent=yes;
+  document.getElementById("ask-no").textContent=no;
+  document.getElementById("ask").hidden=false;
+  if(input)setTimeout(()=>inp.focus(),60);
+  return new Promise(res=>askResolve=res);
+}
+function askDone(ok){
+  const inp=document.getElementById("ask-input");
+  const wasInput=!inp.hidden,v=inp.value.trim();
+  document.getElementById("ask").hidden=true;
+  askResolve(ok?(wasInput?(v||null):true):null);
 }
 
 /* ═══════════ THE SHARED NOTEBOOK (the repo IS the backend) ═══════════ */
 const NOTEBOOK={owner:"adeetie",repo:"python-prep",branch:"main",path:"docs/state.json"};
 let notebookKey=localStorage.getItem("sts-key")||"";
 function setDot(msg){document.getElementById("sync-dot").textContent=msg;}
-function linkNotebook(){
-  const v=prompt(
-"One-time setup, exact steps:\n\n"+
+async function linkNotebook(){
+  const v=await ask(
+"Auto-save writes every point, dare and face-change straight into our repo. One-time setup, exact steps:\n\n"+
 "1. github.com → your photo → Settings → Developer settings\n"+
 "2. Personal access tokens → Fine-grained tokens → Generate new token\n"+
 "3. Repository access: Only select repositories → adeetie/python-prep\n"+
 "4. Permissions → Contents → Read and write\n"+
-"5. Generate, copy, paste it below. It lives on this device only.\n\nPaste the key:");
-  if(v&&v.trim()){notebookKey=v.trim();localStorage.setItem("sts-key",notebookKey);
-    toast("Notebook linked. Every point now writes itself home.");pushSoon();}
+"5. Generate, copy, paste the key below. It stays on this device only.",
+{input:true,yes:"Turn it on"});
+  if(v){notebookKey=v;localStorage.setItem("sts-key",notebookKey);
+    toast("Auto-save is on. Every point now writes itself home.");pushSoon();}
 }
 let pushTimer=null;
 function pushSoon(){if(notebookKey){clearTimeout(pushTimer);pushTimer=setTimeout(pushNotebook,1800);}}
@@ -629,7 +690,7 @@ function toast(msg,crit=false){const t=document.getElementById("toast");t.textCo
 const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
 function confetti(n=40){
   if(calm())return;
-  const colors=["#2FBF71","#EDD48A","#E8938F","#90BE6D","#FAF9F7"];
+  const colors=["#12703E","#C2A455","#C27672","#628F4B","#FAF9F7"];
   for(let i=0;i<n;i++){const c=document.createElement("div");c.className="confetti";
     c.style.left=Math.random()*100+"vw";c.style.background=colors[i%colors.length];
     c.style.animationDuration=(2.2+Math.random()*1.8)+"s";c.style.animationDelay=Math.random()*.4+"s";
@@ -682,9 +743,10 @@ async function cheerGif(){
 }
 
 /* ═══════════ RENDER ═══════════ */
-function setMe(who){
+async function setMe(who){
   if(who===me)return;
-  if(!confirm(`This device belongs to ${me}. Actually switch to ${who}? The honor system has a long memory.`))return;
+  const ok=await ask(`This device belongs to ${me}. Actually switch to ${who}? The honor system has a long memory.`,{yes:"Switch",no:"Stay myself"});
+  if(!ok)return;
   me=who;localStorage.setItem("sts-me",who);renderAll();
 }
 let roastTyped=false;
@@ -712,10 +774,10 @@ function renderStandings(){
                  "ayush leads. aditi, avenge yourself, the montage music is already playing.");
   document.getElementById("plan-input").value=S.players[me].plan||"";
 }
-function setAva(who){
+async function setAva(who){
   if(who!==me)return toast("Cute try. Reinvention is a solo sport, do your own.");
-  const v=prompt("Pick your face, any emoji (or two):",S.players[me].ava);
-  if(v){S.players[me].ava=v.trim().slice(0,4);save();renderStandings();toast("New face accepted. The old you is officially history.");}
+  const v=await ask("Pick your face, any emoji (or two):",{input:true,value:S.players[me].ava,yes:"This is me now"});
+  if(v){S.players[me].ava=v.slice(0,4);save();renderStandings();toast("New face accepted. The old you is officially history.");}
 }
 function savePlan(v){S.players[me].plan=v;save();toast("Contract signed. Witnessed. Binding. Wakeel bhi kuch nahi kar payega.");}
 
@@ -829,9 +891,9 @@ function renderDares(){
       ${c.note?`<div class="ggnote">GG note: “${esc(c.note)}”</div>`:""}
     </div>`).join(""):'<p class="sub">All quiet. Suspiciously quiet. Someone start something.</p>';
 }
-function claimDare(id){
+async function claimDare(id){
   const c=S.challenges.find(x=>x.id===id);
-  const note=prompt("House rule: one honest GG note about "+c.from+"'s challenge or code. Then the payday.");
+  const note=await ask("House rule: one honest GG note about "+c.from+"'s challenge or code. Then the payday.",{input:true,yes:"Sent, pay me"});
   if(!note)return toast("GG note first, payday second. House rules, framed and hung.");
   const before=S.players[me].pts;
   c.status="won";c.note=note;earn(c.pts);bumpStreak(S.players[me]);save();
