@@ -92,10 +92,6 @@ h3{font-size:15px;font-weight:500}
 .plan input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);
   border-radius:var(--r-md);padding:10px 14px;font-family:var(--font-m);font-size:13px;box-shadow:var(--neu-in)}
 
-/* meme wall */
-.meme{display:flex;flex-direction:column;align-items:center;gap:10px}
-.meme img{max-width:min(420px,100%);border-radius:var(--r-md);border:1px solid var(--border);box-shadow:var(--neu)}
-.meme .cap{font-family:var(--font-m);font-size:11px;color:var(--steel)}
 .gifpop{position:fixed;right:18px;bottom:70px;z-index:60;max-width:230px;border-radius:var(--r-md);
   border:2px solid var(--gold);box-shadow:0 12px 40px rgba(0,0,0,.6);animation:enter .3s ease}
 
@@ -270,12 +266,6 @@ section[id^=tab-]{animation:enter .3s ease}
     </div>
   </div>
 
-  <div class="card meme">
-    <div class="eyebrow">certified meme break, doctor\u2019s orders</div>
-    <img id="meme-img" alt="a meme, allegedly motivational" hidden>
-    <div class="cap" id="meme-cap">summoning…</div>
-    <button class="btn ghost" onclick="memeBreak()">ek aur 🔁</button>
-  </div>
 
   <div class="card plan">
     <div class="eyebrow">this week's contract</div>
@@ -525,9 +515,6 @@ const ROASTS=[
 const RANKS=["Toddler","Babbler","Talker","Smooth Talker","Storyteller","Silver Tongue","God of Python"];
 const rankOf=p=>RANKS[Math.min(RANKS.length-1,Math.floor(p/80))];
 const SPICE=["","MILD","SPICY","GHOST PEPPER"];
-const MEME_HUNTS=["hera pheri paisa","moye moye","jethalal laughing","spiderman pointing","thanos perfectly balanced",
-  "iron man eye roll","alia bhatt mujhe ghar jana hai","pushpa jhukega nahi","mogambo khush hua","avengers assemble",
-  "bollywood slow clap","paresh rawal confused","spider man thumbs up","babu bhaiya","srk open arms"];
 const CHEERS=["bollywood celebration dance","avengers victory","spiderman celebration","hrithik dance","ganpat celebration hera pheri"];
 
 /* ═══════════ THE MISSION BOOK ═══════════ */
@@ -739,14 +726,6 @@ async function fetchGif(q){
   const d=await r.json();
   const pick=d.results[Math.floor(Math.random()*d.results.length)];
   return pick.media[0].tinygif.url;
-}
-async function memeBreak(){
-  const q=MEME_HUNTS[Math.floor(Math.random()*MEME_HUNTS.length)];
-  const img=document.getElementById("meme-img"),cap=document.getElementById("meme-cap");
-  cap.textContent="summoning…";
-  try{img.src=await fetchGif(q);img.hidden=false;
-    cap.textContent="“"+q+"” · fresh from the internet";}
-  catch(e){cap.textContent="The memes are buffering. Even chaos has network days.";}
 }
 async function cheerGif(){
   if(calm())return;
@@ -1017,7 +996,6 @@ document.getElementById("tabs").addEventListener("click",e=>{
 });
 function renderAll(){renderHeader();renderStandings();renderWeek();renderIntents();renderQuests();renderForge();renderDares();renderVault();}
 renderAll();
-memeBreak();
 </script>
 </body>
 </html>
