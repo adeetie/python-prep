@@ -1,49 +1,42 @@
 # Game-master notes 🎲
 
-How to keep new missions dropping every week. (Either player can be game-master;
-the game-master still solves the mission too.)
+Either player can run a week. The game-master still plays, still sweats, still owes chai when losing.
 
-## Where to mine real code
+## Where to mine real code for missions
 
-Small, readable, famous — in rough order of friendliness:
+Small, readable, famous. Roughly friendliest first:
 
-| Repo | Good hunting grounds | Toys hiding inside |
-|------|---------------------|--------------------|
+| Repo | Good hunting grounds | Hidden treasure |
+|------|---------------------|-----------------|
+| `python/cpython` | `Lib/statistics.py`, `Lib/textwrap.py` | pure stdlib, superbly commented |
 | `psf/requests` | `models.py`, `utils.py` | exceptions, properties, streams |
 | `tqdm/tqdm` | `std.py` | generators, `__iter__`, formatting |
 | `Textualize/rich` | `rich/color.py`, `rich/markup.py` | regex, dataclasses, enums |
 | `pallets/flask` | `helpers.py` | decorators, context managers |
-| `pallets/click` | `types.py` | classes, inheritance, error messages |
-| `python/cpython` | `Lib/statistics.py`, `Lib/textwrap.py` | pure stdlib, superbly commented |
+| `pallets/click` | `types.py` | classes, inheritance, kind error messages |
 
-**Recipe:** find a function under ~60 lines that does one visible thing → simplify it
-into a `starter.py` that runs standalone with sample data → hide 2–3 "toys of the week"
-in it → write the mission as *break it / refactor it / upgrade it*.
+**Recipe:** find a function under ~60 lines that does one visible thing → simplify it into
+a `starter.py` that runs standalone with sample data → hide two or three ideas inside →
+write the mission as *run it, break it, make it yours*.
 
-## Mission template
+## Mission anatomy (every `MISSION.md`)
 
-Every `MISSION.md` has the same skeleton:
+1. **Where the code comes from.** Always name the real repo. Reading pro code should feel routine.
+2. **Run it first.** An exact command that works before any thinking is required.
+3. **Break it.** An input that crashes it. The tracebacks are the teacher.
+4. **Make it yours.** Open-ended upgrade, so the two solutions diverge. The difference is the lesson.
+5. **Victory conditions.** Checkable by running commands. Opinions stay in the group chat.
+6. **A trail, never an answer.** Point at the doc, the chapter, the video. The hunt is the training.
 
-1. **Where this code comes from** — always name the real repo. Reading pro code should feel normal.
-2. **Run it first** — an exact command that works before any thinking is required.
-3. **Break it** — an input that crashes it (this is where error handling gets learned).
-4. **Refactor it** — the toy of the week, with a count ("at least 3 walruses") not a how-to.
-5. **Upgrade it** — open-ended, so the two solutions diverge and there's something to compare.
-6. **Victory conditions** — checkable by running commands, never by opinion.
+## Voice
 
-## Toy roadmap (one per week, roughly in order)
+Every word follows `VOICE.md`. Witty, warm, Indian meme fluent, best-friend-level teasing,
+strictly platonic, and instructions stay crystal even when the joke lands.
 
-`:=` walrus → exceptions & `raise` → f-string tricks → comprehensions →
-generators & `yield` → `pathlib` → decorators → context managers (`with`) →
-dataclasses → `argparse` → regex → `functools` → async (much later).
+## Keeping the fire lit
 
-## Keeping momentum (the actual point)
-
-- **Drop the mission on a fixed day.** Rhythm beats motivation.
-- **Push something ugly early.** An empty `solutions/` column on the site is the nudge —
-  nobody wants to be the dashed box that says "not pushed yet… 👀".
-- **After both push: one call/chat to compare diffs.** Ask "why did you do it that way?"
-  — that conversation is the real lesson, and the real time spent together.
+- **Missions drop on a fixed day.** Rhythm beats motivation, every single week.
+- **Push something ugly early.** The empty scoreboard column does the nagging for you.
+- **After both push: one call, one question.** "Why did you do it that way?" Repeat weekly, get rich slowly.
 - **Alternate game-masters.** Designing a mission teaches more than solving one.
-- **Never explain a concept before the mission.** Toddler rule: they speak first,
-  grammar comes later. The PDFs are for *after* they've fought the code.
+- **Grammar after speech, always.** The PDFs open after the fight with the code, never before.

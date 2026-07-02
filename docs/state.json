@@ -1,0 +1,23 @@
+{
+  "lastUpdated": 0,
+  "players": {
+    "aditi": { "pts": 0, "spent": 0, "done": [], "taught": [], "streak": 0, "lastDay": "", "plan": "", "ava": "🐈‍⬛" },
+    "ayush": { "pts": 0, "spent": 0, "done": [], "taught": [], "streak": 0, "lastDay": "", "plan": "", "ava": "🗿" }
+  },
+  "week": { "aditi": 0, "ayush": 0 },
+  "challenges": [
+    {
+      "id": "seed1",
+      "from": "aditi",
+      "to": "ayush",
+      "title": "Week 01: Make It Yours",
+      "dare": "Open playgrounds/week-01-make-it-yours/MISSION.md. Make the log analyzer survive garbage.log with grace instead of a traceback, then add one upgrade I'll wish I thought of. Seven days. The scoreboard is watching.",
+      "pts": 30,
+      "when": "",
+      "status": "open",
+      "note": ""
+    }
+  ],
+  "ledger": [],
+  "forged": []
+}

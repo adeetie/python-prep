@@ -3,38 +3,914 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>speak-then-spell</title>
+<title>speak-then-spell, the playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#1a1a1a; --paper:#faf7f2; --accent:#0e7c66; --card:#ffffff; }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: Georgia, 'Times New Roman', serif;
-         background:var(--paper); color:var(--ink); line-height:1.6; }
-  header { padding:3rem 1.5rem 2rem; text-align:center; }
-  header h1 { font-size:2.2rem; margin:0; }
-  header p { color:#666; font-style:italic; }
-  main { max-width:1100px; margin:0 auto; padding:0 1.5rem 4rem; }
-  .week { background:var(--card); border:1px solid #e5e0d8; border-radius:12px;
-          padding:1.5rem; margin-bottom:2rem; }
-  .week h2 { margin-top:0; color:var(--accent); }
-  .solutions { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
-               gap:1rem; }
-  .player { min-width:0; }
-  .player h3 { margin:0.5rem 0; font-family:-apple-system, sans-serif;
-               font-size:0.9rem; text-transform:uppercase; letter-spacing:0.08em; }
-  pre { background:#0f1a17; color:#d7e6e0; padding:1rem; border-radius:8px;
-        overflow-x:auto; font-size:0.8rem; max-height:480px; }
-  .empty { color:#999; font-style:italic; padding:1rem;
-           border:2px dashed #ddd6ca; border-radius:8px; text-align:center; }
-  footer { text-align:center; color:#999; padding:2rem; font-size:0.85rem; }
+/* ── Quietly workspace DNA, recolored: near-black green void, maroon reserved for damage ── */
+:root{
+  color-scheme:dark;
+  --bg:#010805;
+  --surface:#041410;
+  --card:#051A12;
+  --text:#FAF9F7;
+  --muted:#8FAF9F;
+  --steel:#6E9483;
+  --green:#2FBF71;
+  --sage:#90BE6D;
+  --gold:#EDD48A;
+  --maroon:#8E2A35;
+  --maroonSoft:#E8938F;
+  --border:rgba(143,175,159,.14);
+  --borderEm:rgba(143,175,159,.32);
+  --morph1:rgba(250,249,247,.012);
+  --morph3:rgba(250,249,247,.035);
+  --morph4:rgba(250,249,247,.05);
+  --r-card:24px; --r-md:12px; --r-btn:10px; /* sharp rounded rects, zero pills */
+  --font-d:'Space Grotesk',system-ui,sans-serif;
+  --font-m:'JetBrains Mono',ui-monospace,monospace;
+  --font-s:'IBM Plex Serif',Georgia,serif;
+  --neu:8px 8px 18px rgba(0,0,0,.55),-6px -6px 14px rgba(47,191,113,.05),inset 0 1px 0 rgba(255,255,255,.04);
+  --neu-in:inset 5px 5px 12px rgba(0,0,0,.5),inset -4px -4px 10px rgba(47,191,113,.04);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-d);line-height:1.55;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(60% 40% at 50% -5%,rgba(47,191,113,.09),transparent 70%)}
+a{color:var(--green)}
+button{font-family:var(--font-d);cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:20px 20px 80px}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0 20px}
+.wordmark{font-family:var(--font-m);font-size:13px;color:var(--muted);letter-spacing:.12em}
+.wordmark b{color:var(--green)}
+.whoami{display:flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:12px;color:var(--muted)}
+.whoami button{background:var(--card);color:var(--muted);border:1px solid var(--border);
+  border-radius:var(--r-btn);padding:6px 14px;font-family:var(--font-m);font-size:12px;box-shadow:var(--neu)}
+.whoami button.on{color:var(--bg);background:var(--green);border-color:var(--green);font-weight:700}
+
+.roast{font-family:var(--font-s);font-style:italic;font-weight:300;color:var(--muted);
+  font-size:17px;padding:14px 20px;border-left:2px solid var(--maroon);margin-bottom:24px;background:var(--morph1)}
+
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+nav button{background:var(--surface);border:1px solid var(--border);color:var(--muted);
+  padding:10px 18px;border-radius:var(--r-btn);font-size:13px;font-weight:500;box-shadow:var(--neu)}
+nav button.on{color:var(--bg);background:var(--green);border-color:var(--green);font-weight:700;box-shadow:none}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:22px;box-shadow:var(--neu);margin-bottom:18px}
+h1{font-size:27px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:19px;font-weight:700;margin-bottom:6px}
+h3{font-size:15px;font-weight:500}
+.eyebrow{font-family:var(--font-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:8px}
+.sub{color:var(--muted);font-size:14px}
+.serif{font-family:var(--font-s);font-style:italic;font-weight:300}
+
+/* the standings versus bar (signature) */
+.versus{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:18px 0}
+.pcard{background:var(--surface);border-radius:var(--r-card);padding:16px;box-shadow:var(--neu-in);text-align:center;transition:transform .2s}
+.pcard:hover{transform:translateY(-3px)}
+.pcard .ava{font-size:38px;line-height:1;background:none;border:0;cursor:pointer;display:block;margin:0 auto 6px;transition:transform .15s}
+.pcard .ava:hover{transform:scale(1.25) rotate(-8deg)}
+.pcard .pname{font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.06em}
+.pcard .rank{font-family:var(--font-m);font-size:11px;color:var(--gold);margin-top:2px}
+.pcard .xp{font-family:var(--font-m);font-size:24px;color:var(--green);margin-top:8px}
+.pcard .streak{font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:4px}
+.vs{font-family:var(--font-m);font-weight:700;color:var(--maroonSoft);font-size:14px}
+.tug{height:18px;border-radius:var(--r-btn);background:var(--surface);box-shadow:var(--neu-in);overflow:hidden;display:flex}
+.tug .a{background:linear-gradient(90deg,#1d7a49,var(--green));transition:width .5s ease;position:relative;overflow:hidden}
+.tug .a::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);animation:shimmer 2.6s infinite}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.tug .b{background:linear-gradient(90deg,#5c1d25,var(--maroon));flex:1}
+.tuglabel{display:flex;justify-content:space-between;font-family:var(--font-m);font-size:11px;color:var(--muted);margin-top:6px}
+.verdict{text-align:center;font-family:var(--font-s);font-style:italic;color:var(--muted);margin-top:14px;font-size:15px}
+
+.plan input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--r-md);padding:10px 14px;font-family:var(--font-m);font-size:13px;box-shadow:var(--neu-in)}
+
+/* meme wall */
+.meme{display:flex;flex-direction:column;align-items:center;gap:10px}
+.meme img{max-width:min(420px,100%);border-radius:var(--r-md);border:1px solid var(--border);box-shadow:var(--neu)}
+.meme .cap{font-family:var(--font-m);font-size:11px;color:var(--steel)}
+.gifpop{position:fixed;right:18px;bottom:70px;z-index:60;max-width:230px;border-radius:var(--r-md);
+  border:2px solid var(--gold);box-shadow:0 12px 40px rgba(0,0,0,.6);animation:enter .3s ease}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chips button{background:var(--surface);border:1px solid var(--border);color:var(--muted);
+  padding:8px 15px;border-radius:var(--r-btn);font-size:13px;box-shadow:var(--neu)}
+.chips button.on{border-color:var(--green);color:var(--green);font-weight:700}
+.quest{border:1px solid var(--border);border-radius:var(--r-md);background:var(--morph1);margin-bottom:10px;transition:border-color .15s,transform .15s}
+.quest:hover{border-color:var(--borderEm);transform:translateX(3px)}
+.quest>button.head{width:100%;display:flex;align-items:center;gap:12px;background:none;border:0;color:var(--text);
+  padding:14px 16px;text-align:left;font-size:15px}
+.quest .lvl{font-family:var(--font-m);font-size:10px;color:var(--steel);border:1px solid var(--border);
+  border-radius:4px;padding:2px 6px;flex-shrink:0}
+.quest .pts{margin-left:auto;font-family:var(--font-m);font-size:12px;color:var(--gold);flex-shrink:0}
+.quest .done-tick{color:var(--sage);font-family:var(--font-m);font-size:12px}
+.qbody{display:none;padding:0 16px 16px;color:var(--muted);font-size:14px}
+.quest.open .qbody{display:block}
+.qbody .need{margin:10px 0;padding-left:18px}
+.qbody .need li{margin-bottom:3px}
+.qbody .learnhint{font-family:var(--font-m);font-size:12px;color:var(--sage);background:var(--morph3);
+  border-radius:8px;padding:10px 12px;margin:10px 0}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{background:var(--green);color:var(--bg);border:0;border-radius:var(--r-btn);padding:9px 18px;font-weight:700;font-size:13px;
+  text-decoration:none;display:inline-block;transition:transform .12s ease,filter .12s ease}
+.btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.12)}
+.btn:active:not(:disabled){transform:scale(.95)}
+.btn.ghost{background:transparent;border:1px solid var(--borderEm);color:var(--text);font-weight:500}
+.btn.danger{background:var(--maroon);color:var(--text)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+nav button,.chips button{transition:transform .12s ease,color .12s,border-color .12s}
+nav button:hover,.chips button:hover{transform:translateY(-2px)}
+
+.form{display:grid;gap:10px}
+.form input,.form textarea{background:var(--surface);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--r-md);padding:10px 14px;font-size:14px;font-family:var(--font-d);box-shadow:var(--neu-in);width:100%}
+.form textarea{min-height:70px;resize:vertical}
+.form label{font-family:var(--font-m);font-size:11px;color:var(--steel);text-transform:uppercase;letter-spacing:.1em}
+.dare{border-left:3px solid var(--maroon);background:var(--morph1);border-radius:0 var(--r-md) var(--r-md) 0;
+  padding:14px 16px;margin-bottom:10px}
+.dare .meta{font-family:var(--font-m);font-size:11px;color:var(--steel);margin-bottom:4px}
+.dare .stake{color:var(--gold);font-family:var(--font-m);font-size:12px}
+.dare .clock{font-family:var(--font-m);font-size:11px;color:var(--sage);margin-top:4px}
+.dare .clock.late{color:var(--maroonSoft)}
+.dare .ggnote{font-family:var(--font-s);font-style:italic;color:var(--sage);margin-top:6px;font-size:14px}
+.dare.won{border-left-color:var(--sage);opacity:.85}
+
+.search{display:flex;gap:8px;margin-bottom:16px}
+.search input{flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--r-btn);padding:12px 20px;font-size:14px;box-shadow:var(--neu-in)}
+.repo{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--border);border-radius:var(--r-md);
+  padding:14px 16px;margin-bottom:10px;background:var(--morph1)}
+.repo .stars{font-family:var(--font-m);font-size:12px;color:var(--gold);flex-shrink:0;padding-top:2px}
+.repo .rdesc{color:var(--muted);font-size:13px;margin-top:2px}
+
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.stat{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--neu-in);padding:16px;text-align:center}
+.stat .big{font-family:var(--font-m);font-size:26px;color:var(--green)}
+.stat .big.red{color:var(--maroonSoft)}
+.stat .lab{font-family:var(--font-m);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.ledger li{font-family:var(--font-m);font-size:12px;color:var(--muted);padding:8px 0;border-bottom:1px dashed var(--border);list-style:none}
+
+details.guide{border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:10px;background:var(--morph1)}
+details.guide summary{padding:14px 16px;cursor:pointer;font-weight:700;font-size:15px}
+details.guide .gbody{padding:0 18px 18px;color:var(--muted);font-size:14px}
+details.guide .gbody ol{padding-left:20px}
+details.guide .gbody li{margin-bottom:8px}
+details.guide code{font-family:var(--font-m);font-size:12px;background:var(--morph4);padding:2px 6px;border-radius:4px;color:var(--sage)}
+details.guide pre{background:var(--surface);box-shadow:var(--neu-in);border-radius:var(--r-md);padding:14px;overflow-x:auto;
+  font-family:var(--font-m);font-size:12px;color:#CFE8DB;margin:10px 0}
+
+.psych{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
+.psych div{background:var(--morph1);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;font-size:12.5px;color:var(--muted)}
+.psych b{color:var(--sage);display:block;font-family:var(--font-m);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+
+footer{margin-top:40px;color:var(--steel);font-size:12px;font-family:var(--font-m);display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--green);color:var(--bg);
+  font-weight:700;padding:12px 22px;border-radius:var(--r-btn);opacity:0;pointer-events:none;transition:opacity .3s;z-index:90}
+.toast.crit{background:var(--gold)}
+.toast.show{opacity:1}
+
+.flame{display:inline-block;animation:flick 1.1s infinite alternate ease-in-out}
+@keyframes flick{from{transform:scale(1)}to{transform:scale(1.3) rotate(-7deg)}}
+.confetti{position:fixed;width:9px;height:14px;top:-20px;z-index:99;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(108vh) rotate(720deg);opacity:.85}}
+.xpfloat{position:fixed;font-family:var(--font-m);font-weight:700;font-size:18px;color:var(--gold);z-index:99;
+  pointer-events:none;animation:rise 1.1s ease-out forwards;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+@keyframes rise{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-80px) scale(1.4)}}
+section[id^=tab-]{animation:enter .3s ease}
+@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:768px){.versus{grid-template-columns:1fr;gap:8px}.vs{text-align:center}}
 </style>
 </head>
 <body>
+<div class="wrap">
+
 <header>
-  <h1>speak-then-spell 🗣️→🔤</h1>
-  <p>learn to speak Python before learning its alphabet</p>
+  <div class="wordmark"><b>speak-then-spell</b> // two coders. one repo. loser buys chai.</div>
+  <div class="whoami" role="group" aria-label="who is playing">
+    playing as
+    <button id="p-aditi" onclick="setMe('aditi')">aditi</button>
+    <button id="p-ayush" onclick="setMe('ayush')">ayush</button>
+  </div>
 </header>
-<main>
-<section class="week"><h2>Week 01 The Walrus Hunt</h2><div class="solutions"><div class="player"><h3>aditi</h3><div class="empty">not pushed yet… 👀</div></div><div class="player"><h3>ayush</h3><div class="empty">not pushed yet… 👀</div></div></div></section></main>
-<footer>two players, one repo, no peeking</footer>
+
+<div class="roast" id="roast" aria-live="polite"></div>
+
+<nav id="tabs">
+  <button data-t="standings" class="on">The Standings</button>
+  <button data-t="quests">Missions</button>
+  <button data-t="forge">The Kitchen</button>
+  <button data-t="dares">Dares</button>
+  <button data-t="hunt">Repo Hunt</button>
+  <button data-t="vault">The Vault</button>
+  <button data-t="guides">Fine Print</button>
+</nav>
+
+<!-- ═══ STANDINGS ═══ -->
+<section id="tab-standings">
+  <div class="card">
+    <div class="eyebrow">the eternal question</div>
+    <h1>Who is winning?</h1>
+    <div class="versus">
+      <div class="pcard" id="card-aditi"></div>
+      <div class="vs">VS</div>
+      <div class="pcard" id="card-ayush"></div>
+    </div>
+    <div class="tug" aria-hidden="true"><div class="a" id="tug-a" style="width:50%"></div><div class="b"></div></div>
+    <div class="tuglabel"><span>aditi</span><span>ayush</span></div>
+    <p class="verdict" id="verdict"></p>
+    <div class="btnrow" style="justify-content:center">
+      <a class="btn ghost" href="scoreboard.html">see what we cooked this week →</a>
+    </div>
+    <p class="sub" style="text-align:center;margin-top:10px;font-size:12px">tap your face to change it. choose wisely, it says everything about you.</p>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">the weekly battle</div>
+    <h2>This week's blood feud</h2>
+    <p class="sub">Points earned this week only. When the week closes, the winner writes one dare, the loser completes it. That's the whole constitution. Signed, both of us, in commit history.</p>
+    <div class="vgrid" style="margin-top:14px" id="week-stats"></div>
+    <div class="btnrow" style="justify-content:center">
+      <button class="btn danger" onclick="settleWeek()">⚖️ Close the week &amp; crown the winner</button>
+    </div>
+  </div>
+
+  <div class="card meme">
+    <div class="eyebrow">certified meme break</div>
+    <img id="meme-img" alt="a meme, allegedly motivational" hidden>
+    <div class="cap" id="meme-cap">summoning…</div>
+    <button class="btn ghost" onclick="memeBreak()">another one 🔁</button>
+  </div>
+
+  <div class="card plan">
+    <div class="eyebrow">this week's contract</div>
+    <h2>When exactly are you coding?</h2>
+    <p class="sub">Vague plans die quiet deaths. Write the day and the hour. The other player holds lifetime rights to bring this up at dinner.</p>
+    <br>
+    <input id="plan-input" placeholder='e.g. "Tue + Thu, 9pm, one mission minimum. likh ke de raha hoon."' onchange="savePlan(this.value)">
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">designed by a psychologist. yes, on purpose. escape is billable.</div>
+    <div class="psych">
+      <div><b>streaks · loss aversion</b>Losing a streak hurts about twice as much as winning feels good. That's the engine of this whole playground, straight from your brain's own wiring.</div>
+      <div><b>teach-back · retrieval practice</b>Explaining your code out loud pays bonus points because pulling knowledge OUT of your head beats putting it in. Every study ever. Fight the science, lose to the science.</div>
+      <div><b>jackpots · variable reward</b>Sometimes a mission randomly pays extra. You know as much about when as the pigeons did. Worked on them too.</div>
+      <div><b>the contract · implementation intention</b>"Tuesday, 9pm" happens. "I'll code more" has a perfect record of never happening, in the entire history of the sentence.</div>
+      <div><b>GG notes · respect economy</b>Claiming a win costs one honest compliment about the rival's work. Rivalry with respect compounds. Pure trash talk decays. We deal in compound interest here.</div>
+      <div><b>real stakes · skin in the game</b>Points become actual rupees. Broken streaks become actual debts. Anything less is a to-do list wearing a costume.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISSIONS ═══ -->
+<section id="tab-quests" hidden>
+  <div class="card">
+    <div class="eyebrow">pick your poison</div>
+    <h1>Missions</h1>
+    <p class="sub">Every mission hands you a problem, the skills it will demand, and where to hunt for them. Answers stay hidden on purpose: the hunting is the training. Toddlers learn to talk by listening and then talking, grammar shows up years later. Ladder runs first words → brainrot → grind → heists → god.</p>
+    <br>
+    <div class="chips" id="intent-chips"></div>
+    <div id="quest-list"></div>
+  </div>
+</section>
+
+<!-- ═══ KITCHEN ═══ -->
+<section id="tab-forge" hidden>
+  <div class="card">
+    <div class="eyebrow">beyond the menu</div>
+    <h1>The Kitchen</h1>
+    <p class="sub">The built-in missions are the starter menu. Real ones cook their own: invent a project, price it in points, keep it on the menu for both of us, or plate it and serve it straight at the rival as a dare. House specials stay on the menu forever.</p>
+    <br>
+    <div class="form">
+      <input id="f-title" placeholder="Name the dish, 'Thanos Snap for my downloads folder'">
+      <textarea id="f-brief" placeholder="The mission. What exists when you're done? Where's the twist?"></textarea>
+      <input id="f-need" placeholder="Ingredients (comma separated): loops, dicts, an unhealthy imagination">
+      <input id="f-learn" placeholder="Where to hunt for the how: a doc, a video, a chapter, 'wing it'">
+      <input id="f-pts" type="number" min="5" max="200" value="25" aria-label="worth in points">
+      <div class="btnrow">
+        <button class="btn" onclick="forgeQuest(false)">Cook it for both of us</button>
+        <button class="btn danger" onclick="forgeQuest(true)">Cook it &amp; serve it hot to the rival</button>
+      </div>
+    </div>
+    <br>
+    <div id="forge-list"></div>
+  </div>
+</section>
+
+<!-- ═══ DARES ═══ -->
+<section id="tab-dares" hidden>
+  <div class="card">
+    <div class="eyebrow">the maroon zone</div>
+    <h1>Dares &amp; Debts</h1>
+    <p class="sub">Challenge the rival, set the stake, set the clock. Lose a challenge or break a week streak and you owe a forfeit, written by the winner, savored by the winner. Claiming a win costs one GG note: something genuinely good about their work. Appeals go to the maroon zone, where they are read aloud and laughed at.</p>
+    <br>
+    <div class="form">
+      <input id="d-title" placeholder="Name the challenge, 'Build a worse alarm clock than mine'">
+      <textarea id="d-dare" placeholder="Exact terms. What victory looks like. Be specific, wakeel mehenge hote hain."></textarea>
+      <label for="d-when">deadline, the clock starts judging immediately</label>
+      <input id="d-when" type="datetime-local">
+      <label for="d-pts">points on the table</label>
+      <input id="d-pts" type="number" min="5" max="200" value="25">
+      <button class="btn danger" onclick="addDare()">Throw the gauntlet →</button>
+    </div>
+    <br>
+    <div id="dare-list"></div>
+    <div class="btnrow">
+      <button class="btn ghost" onclick="streakBreak()">☠️ Confess a broken streak. Honesty hurts, that's how you know it's real.</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REPO HUNT ═══ -->
+<section id="tab-hunt" hidden>
+  <div class="card">
+    <div class="eyebrow">live from github</div>
+    <h1>Repo Hunt</h1>
+    <p class="sub">Search the wild for real Python projects. Pick a victim. Turn it into a heist: read it, run it, upgrade it, or lovingly ruin it. Reading grown-up code is how toddlers learn to talk, by eavesdropping on adults.</p>
+    <br>
+    <div class="search">
+      <input id="hunt-q" placeholder="try: meme generator · discord bot · jarvis · habit tracker" onkeydown="if(event.key==='Enter')hunt()">
+      <button class="btn" onclick="hunt()">Hunt</button>
+    </div>
+    <div id="hunt-results" class="sub">The field is quiet. The repos can smell fear.</div>
+  </div>
+</section>
+
+<!-- ═══ VAULT ═══ -->
+<section id="tab-vault" hidden>
+  <div class="card">
+    <div class="eyebrow">paisa hi paisa hoga</div>
+    <h1>The Vault</h1>
+    <p class="sub">1 point = ₹2.5. Cash in for a gift, the house funds up to ₹3,000 a pop, or take it straight to your account, the house settles by UPI. Debts from lost dares and broken streaks live here too. In maroon. Where they belong.</p>
+    <br>
+    <div class="vgrid" id="vault-stats"></div>
+    <br>
+    <div class="form">
+      <input id="v-what" placeholder="Cash in for what? 'protein jar', 'that hoodie', or simply 'send money'">
+      <input id="v-amt" type="number" min="50" max="3000" placeholder="₹ how much (3000 tops)">
+      <button class="btn" onclick="redeem()">Cash in</button>
+    </div>
+    <br>
+    <h3>The Ledger</h3>
+    <ul class="ledger" id="ledger"></ul>
+  </div>
+</section>
+
+<!-- ═══ FINE PRINT ═══ -->
+<section id="tab-guides" hidden>
+  <div class="card">
+    <div class="eyebrow">the fine print</div>
+    <h1>How the deep magic works</h1>
+    <p class="sub">Read these when you're ready. They're patient. The missions, less so.</p>
+    <br>
+
+    <details class="guide">
+      <summary>🚚 How we push code and see what we made</summary>
+      <div class="gbody"><ol>
+        <li><b>Solve in your own room.</b> Your file goes in <code>playgrounds/week-XX-name/solutions/&lt;you&gt;/solution.py</code>. Eyes on your own work until both have pushed, the rule is older than the repo.</li>
+        <li><b>Tell git what you did:</b> <pre>git add .
+git commit -m "week 01: cooked"
+git push</pre></li>
+        <li><b>Refresh the gallery:</b> <pre>python build_site.py</pre> That single script reads every playground and rewrites the <a href="scoreboard.html">weekly scoreboard</a>, both solutions, side by side, in public. Commit and push that too.</li>
+        <li><b>Then the fun part.</b> Open the scoreboard together and ask each other one question: "why did you do it that way?" That conversation is worth more than the mission itself. Ye code nahi hai, dawai hai.</li>
+      </ol></div>
+    </details>
+
+    <details class="guide">
+      <summary>🏗️ How this entire playground was built (and how you'll build the next one)</summary>
+      <div class="gbody"><ol>
+        <li><b>One folder. One <code>git init</code>. That's the whole foundation.</b> Missions live in <code>playgrounds/</code>, this entire page is a single <code>docs/index.html</code>. Zero frameworks, zero servers, zero monthly bills. Jugaad-proof architecture.</li>
+        <li><b>GitHub hosts it free.</b> Repo Settings → Pages → serve from the <code>main</code> branch, <code>/docs</code> folder. Every push updates the live site. People pay DevOps engineers lakhs for harder versions of this sentence.</li>
+        <li><b>The weekly scoreboard is written BY Python.</b> <code>build_site.py</code>, about 90 lines, pure standard library, walks the playgrounds and writes <code>docs/scoreboard.html</code>. Read it, it's secretly a mission: pathlib, f-strings, escaping.</li>
+        <li><b>Our scores live in one honest little file,</b> <code>docs/state.json</code>, plus this browser's memory, plus the shared notebook (button in the footer) that writes every point straight back into the repo. The repo is the backend. Always was. 🕷️</li>
+        <li><b>The Repo Hunt is one <code>fetch()</code> call</b> to GitHub's public search, and the memes arrive from Tenor's free tap. View-source this page. Everything here is readable, which is exactly the point.</li>
+        <li><b>Endgame mission:</b> rebuild this playground from scratch, better. The day you can, you can build things people pay for.</li>
+      </ol></div>
+    </details>
+
+    <details class="guide">
+      <summary>🕶️ How to pull an open source heist (and get invited back)</summary>
+      <div class="gbody"><ol>
+        <li><b>Fork the repo.</b> That's your own public copy, and from today, your portfolio.</li>
+        <li><b>Clone your fork, make a branch:</b> <pre>git clone &lt;your-fork-url&gt;
+cd repo
+git checkout -b fix/thing-i-noticed</pre></li>
+        <li><b>Start embarrassingly small.</b> A typo, a confusing error message, an issue labeled <code>good first issue</code>. Everybody merges a good one-liner. A stranger's 2,000-line masterpiece gets closed with a polite emoji.</li>
+        <li><b>Push to your fork, open a Pull Request.</b> Explain what you changed and why, like you're talking to a tired human, because you are.</li>
+        <li><b>The main branch of someone else's project is their living room.</b> You knock, and the knock is called a pull request. One merged PR in a real project outweighs ten certificates, and it stays on your record forever.</li>
+        <li><b>Our own heists live here,</b> upgraded copies of open source projects, in this repo, public, full commit history. That's the shop window for the people who'll pay us later.</li>
+      </ol></div>
+    </details>
+
+    <details class="guide">
+      <summary>🌍 Franchise the playground, when you're ready to give it to the world</summary>
+      <div class="gbody">
+        <p style="margin-bottom:10px">One day this playground stops being ours alone and becomes a place other people learn inside. That day arrives in stages, each stage unlocks at a title, and the ladder keeps count.</p>
+        <ol>
+        <li><b>🗣️ Talker unlocked: clone it for a friend.</b> Fork this repo, rename it, swap the two player names in one file. Their playground, alive in ten minutes. Teaching someone to set theirs up will teach you more git than a month of tutorials.</li>
+        <li><b>📖 Storyteller unlocked: reshape it.</b> Open this page's source and rewrite the mission book: new arcs, new roasts, your own titles. The whole playground is one readable file on purpose, built to be opened, admired second. Ship a themed edition, an all-Marvel one, a gym-bros one, and give it away.</li>
+        <li><b>🥈 Silver Tongue unlocked: make it a product.</b> Between this and something people pay for: accounts instead of two hardcoded names, saves living on a server instead of in a bottle, and someone running missions weekly. Congratulations, you just read a product roadmap. The god-arc missions are its training ground: the API mission becomes accounts, the memory mission becomes saves.</li>
+        <li><b>👑 God unlocked: sell it.</b> Package the playground as a learning space for pairs, friends, siblings, coworkers, anyone who wants accountability with teeth. The psychology inside is the moat, and the house keeps a professional on staff for exactly that. Price it, pitch it, and let the first stranger pay for what we built for fun.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="guide">
+      <summary>💰 The get-rich arc, from reps to revenue</summary>
+      <div class="gbody"><ol>
+        <li><b>Reps first (Muscle Memory missions).</b> Data structures the way you train: progressive overload, 2 or 3 problems a session, spaced, logged. You already live this discipline at the gym. Same iron, different plates.</li>
+        <li><b>Then the shop window.</b> This repo, public: daily green squares, real builds, merged heists. A GitHub profile that shows beats a resume that claims.</li>
+        <li><b>Then pressure training.</b> We interview each other: 45 minutes, one problem, thinking out loud, swap next week. Explaining code while sweating is the entire job interview, rehearsed for free, until any interview room in the world feels like a rerun.</li>
+        <li><b>Then the money.</b> Ideate together, build small tools businesses actually feel: automations, dashboards, bots. Ship, demo, price, put it in front of five people who bleed that exact problem. First rupee in, the arc is real. After that, 25 din mein paisa double. (Legally. Mostly.)</li>
+      </ol></div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <span>© the two of us · <a href="scoreboard.html">weekly scoreboard →</a> · <span id="sync-dot">notebook: sleeping</span></span>
+  <span>
+    <button class="btn ghost" onclick="linkNotebook()">🔗 link the shared notebook</button>
+    <button class="btn ghost" onclick="exportState()">🫙 bottle our progress</button>
+    <button class="btn ghost" onclick="document.getElementById('importer').click()">🍾 pour it back in</button>
+    <input type="file" id="importer" accept=".json" hidden onchange="importState(this)">
+  </span>
+</footer>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<div id="claim" hidden style="position:fixed;inset:0;z-index:50;background:rgba(1,8,5,.92);display:flex;align-items:center;justify-content:center;padding:20px">
+  <div class="card" style="max-width:420px;text-align:center">
+    <div class="eyebrow">first things first</div>
+    <h2>Who are you?</h2>
+    <p class="sub">This device will remember you. Pick honestly, the rival always finds out, and the finding out is legendary.</p>
+    <div class="btnrow" style="justify-content:center;margin-top:16px">
+      <button class="btn" style="font-size:16px;padding:12px 26px" onclick="claimIdentity('aditi')">I'm Aditi</button>
+      <button class="btn" style="font-size:16px;padding:12px 26px" onclick="claimIdentity('ayush')">I'm Ayush</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════ FLAVOR ═══════════ */
+const ROASTS=[
+  "Your last commit is old enough to say 'moye moye'. Just saying.",
+  "Bade bade repos mein aise chhote chhote commits hote rehte hain.",
+  "Gym: full attendance. Missions: witness protection.",
+  "25 din mein skill double. Scheme is live, participation is optional, regret is permanent.",
+  "Ye code nahi hai, dawai hai. Roz lene ka.",
+  "Nice streak. Coding today would keep it that way. Bas keh rahi hoon.",
+  "Beta, tumse na ho payega, said everyone the leaderboard has ever humbled. Prove the aunty wrong.",
+  "Kitne commit the? ... Poore hafte mein, sirf itne?",
+  "Confidence without commits is just cardio for the ego.",
+  "Losers explain. Winners git push. Mogambo sirf push dekh ke khush hua.",
+  "Python easy hai. Consistency ka syllabus alag hai. Padh lo.",
+  "That deadline heard 'bas almost done hai' and started laughing in Hera Pheri.",
+  "Pushpa bhi daily rukta nahi tha. Flower nahi, fire. Commit karo.",
+  "Somewhere a for-loop you promised to write is filing a missing person report.",
+];
+const RANKS=["Toddler","Babbler","Talker","Smooth Talker","Storyteller","Silver Tongue","God of Python"];
+const rankOf=p=>RANKS[Math.min(RANKS.length-1,Math.floor(p/80))];
+const SPICE=["","MILD","SPICY","GHOST PEPPER"];
+const MEME_HUNTS=["hera pheri paisa","moye moye","jethalal laughing","spiderman pointing","thanos perfectly balanced",
+  "iron man eye roll","alia bhatt mujhe ghar jana hai","pushpa jhukega nahi","mogambo khush hua","avengers assemble",
+  "bollywood slow clap","paresh rawal confused","spider man thumbs up","babu bhaiya","srk open arms"];
+const CHEERS=["bollywood celebration dance","avengers victory","spiderman celebration","hrithik dance","ganpat celebration hera pheri"];
+
+/* ═══════════ THE MISSION BOOK ═══════════ */
+const INTENTS={
+  spawn:{name:"🐣 First Words",desc:"Very basic, worn with pride. Everyone's first words were nonsense. Even gods babbled first.",quests:[
+    {id:"sp1",t:"Roast Machine 3000",lvl:1,pts:10,brief:"A script that asks for a name and fires a random roast from your own handwritten collection. Minimum 10 roasts. If they're unfunny the code fails review. Quality control is engineering.",need:["print / input","lists","random.choice"],learn:"Handbook ch.1–3 · CodeWithHarry 'Python in One Video', first 30 min · docs.python.org → random"},
+    {id:"sp2",t:"Gains Calculator",lvl:1,pts:10,brief:"Feed it the weights you lifted this week. It returns total volume, best lift, and a one-line judgment of your effort. Harsh mode ships enabled.",need:["input + int()","basic math","if/elif chains"],learn:"Handbook ch.2 · any 'python conditionals' video, then break things until they behave"},
+    {id:"sp3",t:"The Decider",lvl:1,pts:10,brief:"Undecided about dinner? It picks from your food list, and roasts the pick 20% of the time before confirming. Even the machine has opinions about a fourth biryani this week.",need:["lists","random","while loops"],learn:"Handbook ch.4 · realpython.com/python-while-loop"},
+    {id:"sp4",t:"Password Judge",lvl:2,pts:15,brief:"Paste a password, receive a verdict from 'a toddler guessed this on the first try' to 'acceptable, barely'. Judge length, digits, symbols. It judges and forgets, a judge, never a criminal.",need:["strings","len()","any() + comprehensions","f-strings"],learn:"Handbook ch.5 · docs.python.org string methods table, read it once, thank yourself forever"},
+    {id:"sp5",t:"Excuse Generator",lvl:2,pts:15,brief:"Three random lists, who, what happened, why it's absolutely someone else's fault, welded into one plausible excuse. Add a '--formal' switch for office-grade alibis.",need:["functions","random","sys.argv"],learn:"Handbook ch.6 · look up 'sys.argv tutorial', five-minute read, lifetime of alibis"},
+    {id:"sp6",t:"Streak Snitch",lvl:2,pts:20,brief:"Reads a text file where you log workout dates, reports current streak and all-time best, and snitches LOUDLY when today is missing. Build the accountability you keep dodging.",need:["file reading","datetime basics","loops over lines"],learn:"Handbook ch.7 · docs.python.org → datetime, just date.today() and strptime for now"},
+  ]},
+  brainrot:{name:"🗿 Brainrot Arc",desc:"Peak engineering, worst possible purposes. This is culture, and we will defend it academically.",quests:[
+    {id:"br1",t:"The Worst Volume Slider",lvl:2,pts:20,brief:"The legendary internet challenge, now yours. Build the most cursed possible way to set volume 0 to 100: dice rolls, Roman numerals, a slider that flees the cursor. Your nightmare, your rules.",need:["functions","input checks","random","tkinter for the brave"],learn:"Search 'worst volume control challenge' for the hall of fame · tkinter 'scale widget' when ready"},
+    {id:"br2",t:"🗿 Reply Guy",lvl:2,pts:20,brief:"A chatbot that answers everything with variations of 🗿, and detects questions, insults, and compliments to choose the correct 🗿. Peak communication. Zero words. All meaning.",need:["while True","string tricks","dictionaries"],learn:"Handbook ch.5 + ch.8 · a tutorial for this refuses to exist. good."},
+    {id:"br3",t:"Corporate Jargon Machine",lvl:2,pts:25,brief:"Feed it a normal sentence, receive 'leveraging synergies to circle back on actionable learnings'. 30+ swaps minimum. Reverse mode translates your boss back into human. Both directions lose data. That's the joke.",need:["dicts","replace / split","functions"],learn:"Handbook ch.8 · realpython.com/python-dicts"},
+    {id:"br4",t:"Meme Certificate Factory",lvl:3,pts:30,brief:"Official-looking PNG certificates for fake achievements: 'Certified Gym Rat', 'Left On Read Survivor', 'Regional Biryani Champion'. Name, achievement, date, seal.",need:["pip install pillow","drawing text on images","file paths"],learn:"pillow.readthedocs.io quickstart, the ImageDraw.text example is 90% of this mission"},
+    {id:"br5",t:"Sigma Quote Blender",lvl:3,pts:30,brief:"Store 50 motivational quotes, then Frankenstein random halves together: 'Discipline is doing what needs to be done… to a fresh jar of peanut butter.' Ship the five funniest to the group chat as proof of work.",need:["lists","split","random.sample"],learn:"You already know enough. This one is a confidence test in a clown suit."},
+    {id:"br6",t:"The Petty Alarm",lvl:3,pts:35,brief:"An alarm that keeps ringing until you solve a math problem, type a tongue twister perfectly, or answer trivia about the rival's favorite topics. Petty is the architecture, everything else is decoration.",need:["time / datetime","while loops","making noise","try/except"],learn:"search 'python playsound' · docs.python.org → time.sleep · exceptions: Handbook ch.9"},
+    {id:"br7",t:"Brainrot Translator",lvl:3,pts:35,brief:"Any paragraph in, full brainrot out. You write the dictionary: 'very good' → 'goated', 'caught by surprise' → 'caught in 4k'. The reverse mode comes out wrong in ways funnier than the forward mode. Ship both.",need:["dicts","re.sub","functions"],learn:"docs.python.org → re, learn ONLY re.sub for now. regex is a lifestyle disease, microdose it."},
+  ]},
+  marvel:{name:"🕷️ Marvel Arc",desc:"With great power comes great git blame. Build the MCU's tech department, one script at a time.",quests:[
+    {id:"mv1",t:"The Snap",lvl:1,pts:15,brief:"Point it at any folder. It lists the files, announces 'perfectly balanced, as all things should be', and moves exactly half of them, chosen by fate, into a folder called the_blipped. A restore-the-universe command ships with it. We are heroes here, mostly.",need:["pathlib","random.sample","moving files","a restore plan BEFORE running it"],learn:"docs.python.org → pathlib, Path.iterdir and Path.rename are the whole mission"},
+    {id:"mv2",t:"JARVIS, Are You There?",lvl:2,pts:25,brief:"A terminal butler with a personality: greets you by time of day, reads your agenda from a text file, and judges your schedule with the warmth of a disappointed British AI. This mission is secretly the first brick of something much bigger. You'll see.",need:["datetime","file reading","functions","personality via f-strings"],learn:"Handbook ch.6–7 · every piece is familiar. assemble it."},
+    {id:"mv3",t:"Spider-Sense",lvl:2,pts:30,brief:"A watcher that keeps an eye on a folder and tingles, prints an alert, makes a sound, the instant anything changes: new file, deleted file, edited file. Great power, great surveillance, of your own downloads folder only, Peter.",need:["while + time.sleep","folder snapshots","set differences"],learn:"docs.python.org → os.stat, set operations · build the naive one yourself first, the pip library can wait"},
+    {id:"mv4",t:"Worthy or Not",lvl:2,pts:25,brief:"Mjölnir as a login. A script only the worthy unlock: three riddles written about our repo's history, rate-limited so brute force means waiting like a mortal. The unworthy receive increasingly disappointed messages.",need:["while + counters","time.sleep as punishment","string comparison","hashlib for the fancy"],learn:"Handbook ch.5 · hashlib.sha256 after the plain version works"},
+    {id:"mv5",t:"Multiverse of Madness",lvl:3,pts:40,brief:"One story.py, infinite timelines: takes a short story we write together, then generates N alternate universes by swapping characters, places, and endings from lists, saving each variant as its own file. What if… the biryani was never ordered?",need:["templates + format","nested loops","writing files in a loop","itertools for the bold"],learn:"docs.python.org → itertools.product, one function, infinite universes"},
+  ]},
+  pranks:{name:"😈 Prank Ops",desc:"Deployed on each other ONLY. Harmless, reversible, undone in one command. The Geneva Conventions of this repo. Violations face the tribunal, and the tribunal is the other player, and the tribunal remembers.",quests:[
+    {id:"pr1",t:"The Compliment Trap",lvl:2,pts:20,brief:"A script the victim runs believing it's your mission solution. It works perfectly, except every fourth print compliments them in an unsettlingly specific way. Confusion is the deliverable.",need:["functions","counters","knowing your victim"],learn:"Zero new syntax. Social engineering in a Python costume."},
+    {id:"pr2",t:"Desktop Gremlin",lvl:3,pts:30,brief:"Every 10 minutes a tiny window appears with a random judgmental message, 'still on that same bug?', then vanishes. A kill-switch file the victim can create MUST ship with it. Rules are rules.",need:["tkinter popup","timers","checking a file exists"],learn:"search 'tkinter Toplevel popup' · threading.Timer, just that one"},
+    {id:"pr3",t:"The Loading Bar of Lies",lvl:2,pts:20,brief:"A fake 'system update' bar glides 0 to 99, then hangs at 99 for exactly as long as they once made you wait for a reply. Then prints 'gottem'. Wholesome revenge, terminal edition.",need:["print with \\r","time.sleep","for loops"],learn:"search 'terminal progress bar from scratch', building it by hand is the point"},
+    {id:"pr4",t:"Autocorrect From Hell",lvl:3,pts:35,brief:"A text 'improver' the victim genuinely asks to polish their message. It fixes real typos correctly, and swaps exactly one word per paragraph with something worse: 'meeting' becomes 'séance'. Subtlety scores. Chaos merely amuses.",need:["dicts","random","regex word boundaries"],learn:"regex \\b, one page of docs, endless power"},
+  ]},
+  grind:{name:"🏋️ Muscle Memory",desc:"Reps. The gym for the part of you that gets paid. Progressive overload until every interview room in the world feels like a rerun you've already seen.",quests:[
+    {id:"gr1",t:"Set 1: Arrays & Hashing",lvl:2,pts:25,brief:"Two Sum, Contains Duplicate, Valid Anagram. All three, solved with your own head. Brute force first, then make each faster. Log before/after times like gym PRs, because that's exactly what they are.",need:["lists","dicts as lookup tables","a feel for 'faster'"],learn:"neetcode.io roadmap → Arrays & Hashing · concept videos yes, solution videos after you've bled"},
+    {id:"gr2",t:"Set 2: Two Pointers",lvl:3,pts:30,brief:"Valid Palindrome, Two Sum II, Container With Most Water. Same rules. Then explain each out loud to the rival, that's where the teach-back points live.",need:["two indexes, one loop","the squeeze pattern"],learn:"neetcode.io → Two Pointers · paper and pen first, keyboard second"},
+    {id:"gr3",t:"Set 3: Stacks & Windows",lvl:3,pts:35,brief:"Valid Parentheses, Best Time to Buy & Sell Stock, Longest Substring Without Repeating. The sliding window appears in half of all interviews ever conducted. Farm it shamelessly.",need:["a stack from a list","a set tracking the window"],learn:"neetcode.io → Stack + Sliding Window"},
+    {id:"gr4",t:"The 45-Minute Cage Match",lvl:3,pts:40,brief:"One of us interviews, the other codes on a shared screen thinking OUT LOUD the entire time. Interviewer picks an unseen medium problem. Roles swap next week. Sweating is the syllabus, the real interview becomes a rerun.",need:["everything above","talking while thinking, the rarest skill in tech"],learn:"watch ONE 'google mock interview python' video for the format. then live it."},
+    {id:"gr5",t:"The Shop Window",lvl:3,pts:30,brief:"GitHub profile page, this repo pinned, your two best builds. One page, zero buzzwords, every claim backed by a link. This document will eventually print money. Write it like you believe that.",need:["markdown","ruthless editing"],learn:"search 'github profile readme examples', steal structure, keep your substance"},
+    {id:"gr6",t:"The Interrogation: Python Internals",lvl:3,pts:40,brief:"The rival grills you for 30 minutes on how Python actually works underneath: what a generator really does, why mutable default arguments betray you, 'is' versus '==', how memory behaves. Every fumbled question becomes next session's homework. This round separates 'knows Python' from 'is dangerous in Python'.",need:["generators & iterators, deeply","mutability & references","scopes and closures","saying 'I know where to find out' with a straight face"],learn:"search 'python interview questions internals' · docs.python.org data model page, read it slowly, like a thriller"},
+    {id:"gr7",t:"Napkin Architecture",lvl:3,pts:45,brief:"Design a system on paper in 30 minutes while talking: a URL shortener, a chat app, a food delivery tracker. Boxes, arrows, where data lives, what breaks at a million users. Pure thinking, the kind senior interviews actually test. The rival plays the skeptic and asks 'but what if…' until someone needs chai.",need:["client → server → database mental model","when to cache, roughly","trade-offs, out loud"],learn:"search 'system design interview for beginners', one video for the shape, then draw, draw, draw"},
+    {id:"gr8",t:"The Story Bank",lvl:2,pts:25,brief:"Six short true stories from your builds here: a bug that humbled you, a deadline fight, a thing you shipped, a thing you'd redo. Each one structured: the situation, what YOU did, what happened. Behavioral rounds are storytelling with receipts, and your receipts live in this very repo.",need:["ruthless honesty","tight writing","your commit history as source material"],learn:"search 'STAR method examples software', learn the shape, fill it with real life"},
+  ]},
+  raids:{name:"🕶️ Open Source Heists",desc:"Real repos, real code, real merged pull requests. The portfolio arc, where strangers start vouching for you.",quests:[
+    {id:"ra1",t:"Read a Legend",lvl:2,pts:20,brief:"Pick one: CPython's own textwrap.py or statistics.py. Read the entire file slowly. Write down five things the pros did that you'd have missed. That list is the treasure. Bring it to the rival over chai.",need:["reading > writing","humility, briefly"],learn:"github.com/python/cpython → Lib/ · the Repo Hunt tab gets you there"},
+    {id:"ra2",t:"Knock on the Front Door",lvl:3,pts:40,brief:"Find a Python project with a 'good first issue' tag. Fork, branch, fix, and open a real pull request to real strangers. A merge pays double points and permanent bragging rights in this playground.",need:["fork → branch → pull request","reading a contributor guide","writing so tired maintainers smile"],learn:"Fine Print → the heist guide · goodfirstissue.dev for targets"},
+    {id:"ra3",t:"The Upgrade Heist",lvl:3,pts:40,brief:"Clone a small, loved tool into OUR repo. Upgrade it with one feature the original lacks, based on our theory of what it should do. Document the heist: what changed, why, what broke on the way.",need:["reading unfamiliar code","git","restraint: change little, improve much"],learn:"Repo Hunt tab → something under 2,000 lines · README first, archaeology second"},
+    {id:"ra4",t:"Pip Install Yourself",lvl:3,pts:50,brief:"Take your best brainrot build and publish it properly, so anyone on earth can pip install it. Yes really. Yes you. Imagine the flex at the next family function.",need:["pyproject.toml","build + publish flow","version numbers that mean things"],learn:"packaging.python.org → 'Packaging Python Projects', follow it exactly once, own it forever"},
+  ]},
+  god:{name:"👑 God Arc",desc:"The endgame: agents, APIs, hardware, products people pay for. Godhood in whichever direction you point it: web, AI, data, machines, money. Pick a kingdom, or collect them.",quests:[
+    {id:"g1",t:"API With a Pulse",lvl:3,pts:50,brief:"A FastAPI server with three doors: /roast returns one, /streak reads our real numbers, /judge takes your day and returns a verdict. Tested from the terminal. This exact skeleton holds up every AI product you've ever seen.",need:["FastAPI","uvicorn","pydantic models","the four HTTP verbs"],learn:"fastapi.tiangolo.com, genuinely the best docs in Python. First five pages."},
+    {id:"g2",t:"A Brain of Your Own",lvl:3,pts:60,brief:"Run a language model ON YOUR MACHINE with Ollama, wire it to your API: send a message, get a reply. Zero cloud, zero keys, zero bills, zero eavesdroppers. Fully yours.",need:["Ollama","requests / httpx","streaming, roughly"],learn:"ollama.com → install, `ollama run llama3` first · then its one-page REST docs"},
+    {id:"g3",t:"Give the Brain a Memory",lvl:3,pts:60,brief:"Every conversation stored in ChromaDB, every new reply recalls the relevant past first. This is the actual core loop of a real assistant. Very few people alive have built one from scratch. You're about to leave that group.",need:["ChromaDB","embeddings, the idea","recall-then-reply"],learn:"docs.trychroma.com getting started · one 'RAG explained simply' video, then build"},
+    {id:"g4",t:"Give It a Body",lvl:3,pts:70,brief:"Hardware round. An ESP32 or Raspberry Pi doing ONE physical thing your code commands: blink when a mission is claimed, beep when a streak dies, move a servo when a dare is lost. Software meets meatspace. Electronics are spicy Python.",need:["MicroPython or Pi pins","talking to a device over wifi/serial","courage, soldering optional"],learn:"randomnerdtutorials.com → ESP32 MicroPython · start with blink. everyone starts with blink."},
+    {id:"g5",t:"Ship & Sell",lvl:3,pts:80,brief:"We ideate, we build, we ship: one small tool a real business would pay for, an automation, a dashboard, a bot that kills a real pain. Deploy, demo, price, show it to five people who bleed that problem. The first rupee of revenue completes the mission. The first rupee, the compliments are free.",need:["everything above","one deploy platform","talking to humans about their problems"],learn:"Missing from every doc on earth. That's exactly why it pays the most."},
+  ]},
+};
+
+/* ═══════════ MEMORY ═══════════ */
+const BLANK={lastUpdated:0,players:{
+  aditi:{pts:0,spent:0,done:[],taught:[],streak:0,lastDay:"",plan:"",ava:"🐈‍⬛"},
+  ayush:{pts:0,spent:0,done:[],taught:[],streak:0,lastDay:"",plan:"",ava:"🗿"}},
+  challenges:[],ledger:[],forged:[]};
+let S=JSON.parse(localStorage.getItem("sts")||"null")||structuredClone(BLANK);
+S.forged=S.forged||[];for(const p of Object.values(S.players))p.ava=p.ava||"🙂";
+S.week=S.week||{aditi:0,ayush:0};
+function earn(gain){S.players[me].pts+=gain;S.week[me]=(S.week[me]||0)+gain;}
+function renderWeek(){
+  const a=S.week.aditi||0,b=S.week.ayush||0;
+  document.getElementById("week-stats").innerHTML=`
+    <div class="stat"><div class="big">${a}</div><div class="lab">aditi, this week</div></div>
+    <div class="stat"><div class="big">${b}</div><div class="lab">ayush, this week</div></div>`;
+}
+function settleWeek(){
+  const a=S.week.aditi||0,b=S.week.ayush||0;
+  if(a===0&&b===0)return toast("Close an empty week? Bold. Earn something first, both of you.");
+  if(a===b){toast("A tie. The universe refuses to pick a favorite. Week rolls on.");return;}
+  const win=a>b?"aditi":"ayush",lose=a>b?"ayush":"aditi";
+  if(!confirm(`Close the week? ${win} wins ${Math.max(a,b)} to ${Math.min(a,b)}. ${lose} owes a dare, written by ${win}, savored by ${win}.`))return;
+  S.ledger.unshift({who:lose,what:`WEEKLY BATTLE LOST ${Math.min(a,b)}–${Math.max(a,b)}, ${win} writes the dare, completion mandatory`,rupees:0,when:new Date().toLocaleDateString()});
+  S.week={aditi:0,ayush:0};
+  save();confetti(70);cheerGif();renderAll();
+  toast(`👑 ${win} takes the week. ${lose}, the dare is coming. It cannot be outrun.`,true);
+}
+let me=localStorage.getItem("sts-me")||"aditi";
+let intent=Object.keys(INTENTS)[0];
+if(!localStorage.getItem("sts-me"))addEventListener("DOMContentLoaded",()=>document.getElementById("claim").hidden=false);
+function claimIdentity(who){
+  me=who;localStorage.setItem("sts-me",who);
+  document.getElementById("claim").hidden=true;renderAll();
+  toast(`Welcome, ${who}. This device knows you now. Very committed of you.`);
+}
+
+/* ═══════════ THE SHARED NOTEBOOK (the repo IS the backend) ═══════════ */
+const NOTEBOOK={owner:"adeetie",repo:"python-prep",branch:"main",path:"docs/state.json"};
+let notebookKey=localStorage.getItem("sts-key")||"";
+function setDot(msg){document.getElementById("sync-dot").textContent=msg;}
+function linkNotebook(){
+  const v=prompt(
+"One-time setup, exact steps:\n\n"+
+"1. github.com → your photo → Settings → Developer settings\n"+
+"2. Personal access tokens → Fine-grained tokens → Generate new token\n"+
+"3. Repository access: Only select repositories → adeetie/python-prep\n"+
+"4. Permissions → Contents → Read and write\n"+
+"5. Generate, copy, paste it below. It lives on this device only.\n\nPaste the key:");
+  if(v&&v.trim()){notebookKey=v.trim();localStorage.setItem("sts-key",notebookKey);
+    toast("Notebook linked. Every point now writes itself home.");pushSoon();}
+}
+let pushTimer=null;
+function pushSoon(){if(notebookKey){clearTimeout(pushTimer);pushTimer=setTimeout(pushNotebook,1800);}}
+async function pushNotebook(){
+  setDot("notebook: writing…");
+  try{
+    const api=`https://api.github.com/repos/${NOTEBOOK.owner}/${NOTEBOOK.repo}/contents/${NOTEBOOK.path}`;
+    const h={Authorization:"Bearer "+notebookKey,Accept:"application/vnd.github+json"};
+    const cur=await(await fetch(api+"?ref="+NOTEBOOK.branch,{headers:h})).json();
+    const body={message:"the notebook writes itself",branch:NOTEBOOK.branch,sha:cur.sha,
+      content:btoa(unescape(encodeURIComponent(JSON.stringify(S,null,2))))};
+    const r=await fetch(api,{method:"PUT",headers:h,body:JSON.stringify(body)});
+    setDot(r.ok?"notebook: in sync ✓":"notebook: grumpy, will retry");
+    if(!r.ok)pushSoon();
+  }catch(e){setDot("notebook: offline, saved here for now");}
+}
+async function pullNotebook(){
+  try{
+    const r=await fetch(`https://raw.githubusercontent.com/${NOTEBOOK.owner}/${NOTEBOOK.repo}/${NOTEBOOK.branch}/${NOTEBOOK.path}?t=${Date.now()}`,{cache:"no-store"});
+    const remote=await r.json();
+    if(remote.lastUpdated>(S.lastUpdated||0)){S=remote;S.forged=S.forged||[];save(false);renderAll();setDot("notebook: fresh ✓");}
+    else if(notebookKey)setDot("notebook: in sync ✓");else setDot("notebook: read-only, link it →");
+  }catch(e){
+    fetch("state.json").then(x=>x.json()).then(remote=>{
+      if(remote.lastUpdated>(S.lastUpdated||0)){S=remote;S.forged=S.forged||[];save(false);renderAll();}
+    }).catch(()=>{});
+  }
+}
+pullNotebook();
+
+function save(stamp=true){if(stamp)S.lastUpdated=Date.now();localStorage.setItem("sts",JSON.stringify(S));pushSoon();}
+function toast(msg,crit=false){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show"+(crit?" crit":"");setTimeout(()=>t.className="toast",2600);}
+const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+function confetti(n=40){
+  if(calm())return;
+  const colors=["#2FBF71","#EDD48A","#E8938F","#90BE6D","#FAF9F7"];
+  for(let i=0;i<n;i++){const c=document.createElement("div");c.className="confetti";
+    c.style.left=Math.random()*100+"vw";c.style.background=colors[i%colors.length];
+    c.style.animationDuration=(2.2+Math.random()*1.8)+"s";c.style.animationDelay=Math.random()*.4+"s";
+    c.style.borderRadius=Math.random()<.5?"50%":"2px";
+    document.body.appendChild(c);setTimeout(()=>c.remove(),4600);}
+}
+function xpFloat(text,ev){
+  if(calm())return;
+  const s=document.createElement("span");s.className="xpfloat";s.textContent=text;
+  s.style.left=((ev&&ev.clientX)||innerWidth/2)-20+"px";s.style.top=((ev&&ev.clientY)||innerHeight/2)-30+"px";
+  document.body.appendChild(s);setTimeout(()=>s.remove(),1200);
+}
+function countUp(el,to){
+  if(calm()){el.textContent=to+" points";return;}
+  const from=+el.dataset.v||0;el.dataset.v=to;
+  const t0=performance.now(),dur=500;
+  (function tick(t){const k=Math.min(1,(t-t0)/dur);
+    el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-k,3)))+" points";
+    if(k<1)requestAnimationFrame(tick);})(t0);
+}
+function rankCheck(before,p){
+  if(rankOf(before)!==rankOf(p.pts)){confetti(70);cheerGif();
+    setTimeout(()=>toast(`⬆ PROMOTED. ${me} is now a ${rankOf(p.pts).toUpperCase()}. The plot thickens.`,true),900);}
+}
+const other=()=>me==="aditi"?"ayush":"aditi";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ═══════════ MEMES (Tenor's free tap) ═══════════ */
+async function fetchGif(q){
+  const r=await fetch(`https://g.tenor.com/v1/search?key=LIVDSRZULELA&q=${encodeURIComponent(q)}&limit=15&contentfilter=medium`);
+  const d=await r.json();
+  const pick=d.results[Math.floor(Math.random()*d.results.length)];
+  return pick.media[0].tinygif.url;
+}
+async function memeBreak(){
+  const q=MEME_HUNTS[Math.floor(Math.random()*MEME_HUNTS.length)];
+  const img=document.getElementById("meme-img"),cap=document.getElementById("meme-cap");
+  cap.textContent="summoning…";
+  try{img.src=await fetchGif(q);img.hidden=false;
+    cap.textContent="“"+q+"” · courtesy of the internet, curated by fate";}
+  catch(e){cap.textContent="The memes are buffering. Even chaos has network days.";}
+}
+async function cheerGif(){
+  if(calm())return;
+  try{
+    const url=await fetchGif(CHEERS[Math.floor(Math.random()*CHEERS.length)]);
+    const g=document.createElement("img");g.className="gifpop";g.src=url;g.alt="victory, as foretold";
+    document.body.appendChild(g);setTimeout(()=>g.remove(),4200);
+  }catch(e){}
+}
+
+/* ═══════════ RENDER ═══════════ */
+function setMe(who){
+  if(who===me)return;
+  if(!confirm(`This device belongs to ${me}. Actually switch to ${who}? The honor system has a long memory.`))return;
+  me=who;localStorage.setItem("sts-me",who);renderAll();
+}
+let roastTyped=false;
+function renderHeader(){
+  for(const p of["aditi","ayush"])document.getElementById("p-"+p).className=me===p?"on":"";
+  const line="“"+ROASTS[new Date().getDate()%ROASTS.length]+"”",el=document.getElementById("roast");
+  if(roastTyped||calm()){el.textContent=line;roastTyped=true;return;}
+  roastTyped=true;let i=0;el.textContent="";
+  (function type(){el.textContent=line.slice(0,++i);if(i<line.length)setTimeout(type,22);})();
+}
+function renderStandings(){
+  const a=S.players.aditi,b=S.players.ayush;
+  const card=(n,p)=>`<button class="ava" onclick="setAva('${n}')" title="change your face" aria-label="change ${n}'s face">${p.ava}</button>
+    <div class="pname">${n}</div><div class="rank">🏆 ${rankOf(p.pts)}</div>
+    <div class="xp" id="xp-${n}"></div><div class="streak"><span class="flame">🔥</span> streak: ${p.streak}w · missions: ${p.done.length}</div>`;
+  document.getElementById("card-aditi").innerHTML=card("aditi",a);
+  document.getElementById("card-ayush").innerHTML=card("ayush",b);
+  countUp(document.getElementById("xp-aditi"),a.pts);
+  countUp(document.getElementById("xp-ayush"),b.pts);
+  const total=a.pts+b.pts;
+  document.getElementById("tug-a").style.width=(total?Math.round(a.pts/total*100):50)+"%";
+  document.getElementById("verdict").textContent=
+    a.pts===b.pts?"Dead even. Statistically suspicious. Someone push code.":
+    (a.pts>b.pts?"aditi leads, for now. ayush, the comeback montage starts the second you open a terminal.":
+                 "ayush leads. aditi, avenge yourself, the montage music is already playing.");
+  document.getElementById("plan-input").value=S.players[me].plan||"";
+}
+function setAva(who){
+  if(who!==me)return toast("Cute try. Reinvention is a solo sport, do your own.");
+  const v=prompt("Pick your face, any emoji (or two):",S.players[me].ava);
+  if(v){S.players[me].ava=v.trim().slice(0,4);save();renderStandings();toast("New face accepted. The old you is officially history.");}
+}
+function savePlan(v){S.players[me].plan=v;save();toast("Contract signed. Witnessed. Binding. Wakeel bhi kuch nahi kar payega.");}
+
+function renderIntents(){
+  const chips=Object.entries(INTENTS).map(([k,i])=>
+    `<button class="${k===intent?'on':''}" onclick="intent='${k}';renderIntents();renderQuests()">${i.name}</button>`);
+  chips.push(`<button class="${intent==='forged'?'on':''}" onclick="intent='forged';renderIntents();renderQuests()">🍳 Our Kitchen (${S.forged.length})</button>`);
+  document.getElementById("intent-chips").innerHTML=chips.join("");
+}
+function questsFor(key){return key==="forged"?S.forged:INTENTS[key].quests;}
+function renderQuests(){
+  const list=questsFor(intent),p=S.players[me];
+  const desc=intent==="forged"?"House specials, invented by us. The menu was always a suggestion.":INTENTS[intent].desc;
+  document.getElementById("quest-list").innerHTML=
+    `<p class="sub serif" style="margin-bottom:14px">${desc}</p>`+
+    (list.length?list.map(q=>{
+      const done=p.done.includes(q.id),taught=p.taught.includes(q.id);
+      return `<div class="quest">
+        <button class="head" onclick="this.parentElement.classList.toggle('open')">
+          <span class="lvl">${SPICE[q.lvl||2]}</span> ${esc(q.t)}
+          <span class="pts">${done?'<span class="done-tick">✓ conquered</span>':"+"+q.pts+" points"}</span>
+        </button>
+        <div class="qbody">
+          <p>${esc(q.brief)}</p>
+          <p style="margin-top:10px;font-family:var(--font-m);font-size:11px;color:var(--steel);text-transform:uppercase;letter-spacing:.1em">what it'll take</p>
+          <ul class="need">${(q.need||[]).map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
+          <div class="learnhint">📍 where to hunt: ${esc(q.learn||"nowhere. wing it. that's the mission.")}</div>
+          <div class="btnrow">
+            <button class="btn" ${done?"disabled":""} onclick="doneQuest('${q.id}',${q.pts})">${done?"Conquered ✓":"I built it → claim the glory"}</button>
+            <button class="btn ghost" ${!done||taught?"disabled":""} onclick="teachBack('${q.id}')">${taught?"Taught ✓":"Explained it out loud to the rival (+5)"}</button>
+          </div>
+        </div></div>`;
+    }).join(""):'<p class="sub">The stove is cold. Go light it, first dish gets cooked in The Kitchen tab.</p>');
+}
+function doneQuest(id,pts){
+  const p=S.players[me];if(p.done.includes(id))return;
+  const before=p.pts;p.done.push(id);
+  const crit=Math.random()<.25,gain=pts+(crit?5:0);
+  earn(gain);bumpStreak(p);save();
+  xpFloat("+"+gain+" points",window.event);if(crit){confetti(45);cheerGif();}
+  renderAll();
+  toast(crit?`JACKPOT, +${gain} points. The universe tipped you. Ask zero questions.`:`+${gain} points. Honor system, and the rival audits like it's a hobby.`,crit);
+  rankCheck(before,p);
+}
+function teachBack(id){const p=S.players[me];if(p.taught.includes(id))return;const before=p.pts;p.taught.push(id);earn(5);save();xpFloat("+5 points",window.event);renderAll();toast("+5 points. Saying it out loud hits different, na?");rankCheck(before,p);}
+function bumpStreak(p){
+  const now=new Date(),wk=now.getFullYear()+"-w"+Math.ceil(((now-new Date(now.getFullYear(),0,1))/864e5+1)/7);
+  if(p.lastDay!==wk){p.streak+=1;p.lastDay=wk;}
+}
+
+/* ═══════════ KITCHEN ═══════════ */
+function forgeQuest(hurl){
+  const t=document.getElementById("f-title").value.trim(),
+        brief=document.getElementById("f-brief").value.trim(),
+        need=document.getElementById("f-need").value.split(",").map(s=>s.trim()).filter(Boolean),
+        learn=document.getElementById("f-learn").value.trim(),
+        pts=+document.getElementById("f-pts").value||25;
+  if(!t||!brief)return toast("A dish needs a name and a recipe. Even chaos fills the form.");
+  const q={id:"fq"+Date.now(),t,brief,need,learn,pts,lvl:2,by:me};
+  S.forged.unshift(q);
+  if(hurl){
+    S.challenges.unshift({id:"c"+Date.now(),from:me,to:other(),title:t,dare:brief+(learn?`\n📍 hunt here: ${learn}`:""),pts,when:"",status:"open",note:""});
+  }
+  save();renderForge();renderIntents();renderDares();
+  ["f-title","f-brief","f-need","f-learn"].forEach(i=>document.getElementById(i).value="");
+  toast(hurl?`Cooked and served to ${other()}. Bon appétit, rival.`:"On the menu for both of us now. Chef's word is final.");
+}
+function renderForge(){
+  document.getElementById("forge-list").innerHTML=S.forged.length?
+    `<h3 style="margin-bottom:10px">The menu so far</h3>`+S.forged.map(q=>`
+      <div class="dare" style="border-left-color:var(--green)">
+        <div class="meta">cooked by ${q.by} · <span class="stake">${q.pts} points</span></div>
+        <b>${esc(q.t)}</b><p class="sub">${esc(q.brief)}</p>
+        <div class="btnrow"><button class="btn ghost" onclick="hurlForged('${q.id}')">serve this to the rival →</button></div>
+      </div>`).join(""):'<p class="sub">Empty menu. The presets are fine, and "fine" has impressed exactly nobody, ever.</p>';
+}
+function hurlForged(id){
+  const q=S.forged.find(x=>x.id===id);if(!q)return;
+  S.challenges.unshift({id:"c"+Date.now(),from:me,to:other(),title:q.t,dare:q.brief+(q.learn?`\n📍 hunt here: ${q.learn}`:""),pts:q.pts,when:"",status:"open",note:""});
+  save();renderDares();toast(`Served to ${other()}. It's on the table. Steam rising.`);
+}
+
+/* ═══════════ DARES ═══════════ */
+function addDare(){
+  const t=document.getElementById("d-title").value.trim(),d=document.getElementById("d-dare").value.trim(),
+        when=document.getElementById("d-when").value,
+        pts=+document.getElementById("d-pts").value||25;
+  if(!t)return toast("A gauntlet needs a name.");
+  S.challenges.unshift({id:"c"+Date.now(),from:me,to:other(),title:t,dare:d,pts,when,status:"open",note:""});
+  save();renderDares();
+  document.getElementById("d-title").value="";document.getElementById("d-dare").value="";document.getElementById("d-when").value="";
+  toast(`Gauntlet thrown at ${other()}. Takebacks expired in 1997.`);
+}
+function clockLine(c){
+  if(!c.when||c.status!=="open")return"";
+  const ms=new Date(c.when)-new Date(),days=Math.ceil(ms/864e5);
+  if(ms<0)return `<div class="clock late">⏰ overdue. the clock saw everything and it is judging.</div>`;
+  if(days<=1)return `<div class="clock late">⏰ due today. sweat is a valid IDE.</div>`;
+  return `<div class="clock">⏳ ${days} days on the clock, ticking politely, for now.</div>`;
+}
+function renderDares(){
+  document.getElementById("dare-list").innerHTML=S.challenges.length?S.challenges.map(c=>`
+    <div class="dare ${c.status==='won'?'won':''}">
+      <div class="meta">${c.from} → ${c.to} · <span class="stake">${c.pts} points on the table</span> · ${c.status.toUpperCase()}</div>
+      <b>${esc(c.title)}</b>
+      <p class="sub" style="white-space:pre-line">${esc(c.dare||"")}</p>
+      ${clockLine(c)}
+      ${c.status==="open"&&c.to===me?`<div class="btnrow">
+        <button class="btn" onclick="claimDare('${c.id}')">Done. Pay me ${c.pts} points.</button>
+        <button class="btn danger" onclick="forfeitDare('${c.id}')">I failed. Write my punishment.</button></div>`:""}
+      ${c.note?`<div class="ggnote">GG note: “${esc(c.note)}”</div>`:""}
+    </div>`).join(""):'<p class="sub">All quiet. Suspiciously quiet. Someone start something.</p>';
+}
+function claimDare(id){
+  const c=S.challenges.find(x=>x.id===id);
+  const note=prompt("House rule: one honest GG note about "+c.from+"'s challenge or code. Then the payday.");
+  if(!note)return toast("GG note first, payday second. House rules, framed and hung.");
+  const before=S.players[me].pts;
+  c.status="won";c.note=note;earn(c.pts);bumpStreak(S.players[me]);save();
+  confetti(55);cheerGif();renderAll();
+  toast(`+${c.pts} points. Victory with class. Disgusting. Well done.`);
+  rankCheck(before,S.players[me]);
+}
+function forfeitDare(id){
+  const c=S.challenges.find(x=>x.id===id);c.status="forfeited";
+  S.ledger.unshift({who:me,what:`FORFEIT: lost "${c.title}", ${c.from} writes the punishment`,rupees:0,when:new Date().toLocaleDateString()});
+  save();renderAll();toast(`Debt recorded. ${c.from} is already scheming. As is tradition.`);
+}
+function streakBreak(){
+  S.players[me].streak=0;
+  S.ledger.unshift({who:me,what:`STREAK BROKEN, ${other()} writes the forfeit`,rupees:0,when:new Date().toLocaleDateString()});
+  save();renderAll();toast("Streak: zero. Debt: born. Honesty: respected. Barely.");
+}
+
+/* ═══════════ HUNT ═══════════ */
+async function hunt(){
+  const q=document.getElementById("hunt-q").value.trim();if(!q)return;
+  const box=document.getElementById("hunt-results");box.textContent="Stalking GitHub…";
+  try{
+    const r=await fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(q)}+language:python&sort=stars&per_page=8`);
+    const d=await r.json();
+    box.innerHTML=(d.items||[]).map(x=>`<div class="repo">
+      <span class="stars">★ ${x.stargazers_count.toLocaleString()}</span>
+      <div style="flex:1;min-width:0"><a href="${x.html_url}" target="_blank" rel="noopener"><b>${esc(x.full_name)}</b></a>
+      <div class="rdesc">${esc(x.description||"description missing. mysterious. probably cursed.")}</div></div>
+      <button class="btn ghost" onclick='raidify(${JSON.stringify(x.full_name)})'>heist it →</button>
+    </div>`).join("")||"Zero results. Even GitHub is speechless.";
+  }catch(e){box.textContent="GitHub said 'thoda ruko', too many requests. Touch grass for sixty seconds and retry.";}
+}
+function raidify(name){
+  document.querySelector('[data-t="dares"]').click();
+  document.getElementById("d-title").value=`Heist: ${name}`;
+  document.getElementById("d-dare").value=`Clone ${name}. Run it. Understand one file completely. Then upgrade it with a feature it deserves, or build the cursed version. Chef's choice.`;
+  toast("Heist drafted. Set the stake, set the clock, throw it.");
+}
+
+/* ═══════════ VAULT ═══════════ */
+const RATE=2.5,CAP=3000;
+function renderVault(){
+  const p=S.players[me],bal=Math.max(0,Math.round(p.pts*RATE-p.spent));
+  const debts=S.ledger.filter(l=>l.who===me&&(l.what.startsWith("FORFEIT")||l.what.startsWith("STREAK"))).length;
+  document.getElementById("vault-stats").innerHTML=`
+    <div class="stat"><div class="big">${p.pts}</div><div class="lab">${me}'s points</div></div>
+    <div class="stat"><div class="big">₹${bal}</div><div class="lab">spendable · ₹${CAP} cap per cash-in</div></div>
+    <div class="stat"><div class="big red">${debts}</div><div class="lab">unpaid forfeits. tick tock.</div></div>`;
+  document.getElementById("ledger").innerHTML=S.ledger.map(l=>
+    `<li>[${l.when}] ${l.who}: ${esc(l.what)}${l.rupees?`, ₹${l.rupees}`:""}</li>`).join("")||"<li>Ledger empty. Boring. Earn something.</li>";
+}
+function redeem(){
+  const what=document.getElementById("v-what").value.trim(),amt=+document.getElementById("v-amt").value;
+  const p=S.players[me],bal=Math.max(0,Math.round(p.pts*RATE-p.spent));
+  if(!what||!amt)return toast("Name it and price it.");
+  if(amt>CAP)return toast(`Cap is ₹${CAP}. The house runs a budget, a hedge fund it is… someday.`);
+  if(amt>bal)return toast(`You have ₹${bal}. Ambition noted, respectfully filed.`);
+  p.spent+=amt;S.ledger.unshift({who:me,what:`CASHED IN: ${what}`,rupees:amt,when:new Date().toLocaleDateString()});
+  save();renderVault();toast(`₹${amt} claimed, "${what}". The house settles by gift or UPI. The house always pays.`);
+}
+
+/* ═══════════ BOTTLING (backup lane) ═══════════ */
+function exportState(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="state.json";a.click();
+  toast("Bottled. Drop it into docs/, commit, push. Old school, works forever.");
+}
+function importState(inp){
+  const f=inp.files[0];if(!f)return;
+  f.text().then(t=>{S=JSON.parse(t);S.forged=S.forged||[];save(false);renderAll();toast("Poured back in. Timelines merged. Zero paradoxes detected.");});
+}
+
+/* ═══════════ TABS + INIT ═══════════ */
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll("#tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll("section[id^=tab-]").forEach(s=>s.hidden=s.id!=="tab-"+b.dataset.t);
+});
+function renderAll(){renderHeader();renderStandings();renderWeek();renderIntents();renderQuests();renderForge();renderDares();renderVault();}
+renderAll();
+memeBreak();
+</script>
 </body>
 </html>

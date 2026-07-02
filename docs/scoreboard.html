@@ -1,21 +1,4 @@
-"""Write the weekly-mission scoreboard page (docs/scoreboard.html).
-
-Run from the repo root after solving a mission:
-
-    python build_site.py
-
-Standard library only, on purpose — reading this file is itself a quest:
-pathlib, f-strings, html.escape, sorting. Nothing in here is magic.
-"""
-
-import html
-from pathlib import Path
-
-ROOT = Path(__file__).parent
-PLAYGROUNDS = ROOT / "playgrounds"
-DOCS = ROOT / "docs"
-
-PAGE_TOP = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -55,41 +38,7 @@ PAGE_TOP = """<!DOCTYPE html>
   <p><a href="index.html">← back to the playground</a></p>
 </header>
 <main>
-"""
-
-PAGE_BOTTOM = """</main>
+<section class="week"><h2>Week 01 Make It Yours</h2><div class="solutions"><div class="player"><h3>aditi</h3><div class="empty">still cooking, apparently. the silence says plenty. 👀</div></div><div class="player"><h3>ayush</h3><div class="empty">still cooking, apparently. the silence says plenty. 👀</div></div></div></section></main>
 <footer>two coders · one repo · loser buys chai</footer>
 </body>
 </html>
-"""
-
-
-def code_block(path):
-    return f"<pre><code>{html.escape(path.read_text())}</code></pre>"
-
-
-def render_player(player_dir):
-    files = sorted(p for p in player_dir.rglob("*.py"))
-    body = "".join(f"<p><em>{html.escape(f.name)}</em></p>{code_block(f)}" for f in files)
-    if not body:
-        body = '<div class="empty">still cooking, apparently. the silence says plenty. 👀</div>'
-    return f'<div class="player"><h3>{html.escape(player_dir.name)}</h3>{body}</div>'
-
-
-def render_week(week_dir):
-    title = week_dir.name.replace("-", " ").title()
-    players = sorted(p for p in (week_dir / "solutions").iterdir() if p.is_dir())
-    cols = "".join(render_player(p) for p in players)
-    return f'<section class="week"><h2>{html.escape(title)}</h2><div class="solutions">{cols}</div></section>'
-
-
-def main():
-    weeks = sorted(d for d in PLAYGROUNDS.iterdir() if (d / "solutions").is_dir())
-    DOCS.mkdir(exist_ok=True)
-    page = PAGE_TOP + "".join(render_week(w) for w in weeks) + PAGE_BOTTOM
-    (DOCS / "scoreboard.html").write_text(page)
-    print(f"scoreboard rebuilt → docs/scoreboard.html ({len(weeks)} week(s))")
-
-
-if __name__ == "__main__":
-    main()
