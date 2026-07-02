@@ -6,8 +6,8 @@
 <title>speak-then-spell — weekly missions</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono&family=IBM+Plex+Serif:ital,wght@1,300&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#010805;--card:#051A12;--text:#FAF9F7;--muted:#8FAF9F;--green:#2FBF71;
-        --gold:#EDD48A;--maroon:#8E2A35;--border:rgba(143,175,159,.14);
+  :root{color-scheme:dark;--bg:#010805;--card:#051A12;--surface:#041410;--text:#FAF9F7;--muted:#8FAF9F;
+        --green:#2FBF71;--gold:#EDD48A;--maroon:#8E2A35;--border:rgba(143,175,159,.14);
         --neu:8px 8px 18px rgba(0,0,0,.55),-6px -6px 14px rgba(47,191,113,.05)}
   *{box-sizing:border-box;margin:0}
   body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.6}
@@ -27,6 +27,13 @@
       font-family:'JetBrains Mono',monospace;font-size:.75rem;max-height:480px;border:1px solid var(--border)}
   .empty{color:var(--muted);font-style:italic;padding:1.2rem;border:2px dashed var(--maroon);
          border-radius:12px;text-align:center;font-family:'IBM Plex Serif',serif}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:.5rem 0 1rem}
+  .run{background:var(--green);color:var(--bg);border:0;border-radius:10px;padding:8px 16px;
+       font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;
+       transition:transform .12s ease}
+  .run:hover{transform:translateY(-2px)}
+  .out{background:#000;color:#9fe8c3;min-height:2rem}
+  .out[hidden]{display:none}
   footer{text-align:center;color:var(--muted);padding:2rem;font-size:.85rem;
          font-family:'JetBrains Mono',monospace}
 </style>
@@ -35,10 +42,57 @@
 <header>
   <h1>weekly missions ⚔️</h1>
   <p>both solve alone. both push. then we talk. eyes on your own work until then, the rule is older than the repo.</p>
+  <p>every solution below runs LIVE in this page. press ▶ and watch the rival's code breathe.</p>
   <p><a href="index.html">← back to the playground</a></p>
 </header>
 <main>
 <section class="week"><h2>Week 01 Make It Yours</h2><div class="solutions"><div class="player"><h3>aditi</h3><div class="empty">still cooking, apparently. the silence says plenty. 👀</div></div><div class="player"><h3>ayush</h3><div class="empty">still cooking, apparently. the silence says plenty. 👀</div></div></div></section></main>
 <footer>two coders · one repo · loser buys chai</footer>
+<script>
+const CODES = {};
+const FILES = {"week-01-make-it-yours": {"garbage.log": "2026-07-01 14:32:07 GET /api/users 200 123ms\nthis line is definitely not a log entry\n2026-07-01 14:32:09 POST /api/login 200 87ms\n2026-07-01 14:32:11 GET /api/feed 200 not-a-number\n2026-07-01 corrupted\n2026-07-01 14:32:15 GET /api/users/42 404 12ms\n\n2026-07-01 14:32:18 POST /api/upload 500 902ms\n", "server.log": "2026-07-01 14:32:07 GET /api/users 200 123ms\n2026-07-01 14:32:09 POST /api/login 200 87ms\n2026-07-01 14:32:11 GET /api/feed 200 431ms\n2026-07-01 14:32:15 GET /api/users/42 404 12ms\n2026-07-01 14:32:18 POST /api/upload 500 902ms\n2026-07-01 14:32:20 GET /api/feed 200 380ms\n2026-07-01 14:32:24 GET /api/search 200 611ms\n2026-07-01 14:32:29 POST /api/login 401 45ms\n2026-07-01 14:32:33 GET /api/users 200 98ms\n2026-07-01 14:32:40 GET /api/export 503 1204ms\n2026-07-01 14:32:44 GET /api/feed 200 355ms\n2026-07-01 14:32:51 DELETE /api/users/7 200 66ms\n"}};
+let pyodideReady = null;
+function wakeTheSnake() {
+  if (!pyodideReady) {
+    pyodideReady = new Promise(resolve => {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js";
+      s.onload = async () => resolve(await loadPyodide());
+      document.head.appendChild(s);
+    });
+  }
+  return pyodideReady;
+}
+async function runSol(btn) {
+  const out = btn.closest(".player").querySelector('[data-out="' + btn.dataset.code + '"]');
+  out.hidden = false;
+  out.textContent = "waking the snake… (first time takes a few seconds, worth it)";
+  try {
+    const py = await wakeTheSnake();
+    const files = FILES[btn.dataset.week] || {};
+    for (const [name, content] of Object.entries(files)) py.FS.writeFile(name, content);
+    py.globals.set("__code__", CODES[btn.dataset.code]);
+    py.globals.set("__arg__", btn.dataset.arg || "");
+    const result = await py.runPythonAsync(`
+import sys, io, traceback
+sys.argv = ["solution.py"] + ([__arg__] if __arg__ else [])
+_buf = io.StringIO()
+_so, _se = sys.stdout, sys.stderr
+sys.stdout = sys.stderr = _buf
+try:
+    exec(compile(__code__, "solution.py", "exec"), {"__name__": "__main__"})
+except SystemExit:
+    pass
+except BaseException:
+    traceback.print_exc()
+sys.stdout, sys.stderr = _so, _se
+_buf.getvalue()
+`);
+    out.textContent = result || "(finished, quietly. very zen.)";
+  } catch (e) {
+    out.textContent = "this one wants a real terminal (probably input() or a library). run it locally.\n" + e;
+  }
+}
+</script>
 </body>
 </html>
