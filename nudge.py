@@ -27,7 +27,7 @@ QUIET_ROASTS = [
     "Zero points today. The streak is writing its will.",
     "The terminal misses you. It said so. In writing.",
     "Aaj nahi toh kab? The leaderboard already knows your answer.",
-    "One mission. Twenty minutes. Or lose the week over chai you'll have to buy.",
+    "One mission. Twenty minutes. Or lose the week and owe a whole night out.",
     "Your rival's commit graph is greener. Bas keh raha hoon.",
 ]
 
