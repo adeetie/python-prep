@@ -185,7 +185,7 @@ footer{margin-top:40px;color:var(--steel);font-size:12px;font-family:var(--font-
   color:var(--text);border-radius:var(--r-md);padding:10px 14px;font-size:14px;
   font-family:var(--font-d);box-shadow:var(--neu-in);min-height:56px;resize:vertical}
 .form input{accent-color:var(--green)}
-input[type="datetime-local"]::-webkit-calendar-picker-indicator{filter:invert(.6) sepia(1) saturate(3) hue-rotate(90deg);cursor:pointer}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator{cursor:pointer}
 #tour{border:1px solid var(--border);border-radius:var(--r-md);background:var(--morph1)}
 #tour summary{padding:14px 16px;cursor:pointer;font-weight:700}
 #tour ol{padding:0 18px 16px 36px;color:var(--muted);font-size:14px}
@@ -231,14 +231,14 @@ section[id^=tab-]{animation:enter .3s ease}
 <section id="tab-standings">
   <div class="card">
     <details id="tour">
-      <summary>🧭 New here? The 30-second tour. Ayush, this means you.</summary>
+      <summary>🧭 New here? The 30-second tour. Ayush, yes you. Come here.</summary>
       <ol>
-        <li><b>Missions tab</b>: pick a problem, build it in Python on your machine, come back, press <b>"I built it"</b>. Points land instantly.</li>
-        <li><b>The bar above</b> keeps the lifetime score. The <b>weekly battle card</b> below counts this week only. Close the week with the button: winner writes one dare, loser completes it. A ride, a treat, winner's imagination.</li>
-        <li><b>Dares tab</b>: challenge each other anytime, with a deadline and points on the table.</li>
-        <li><b>The Kitchen</b>: when the menu bores you, invent your own missions and serve them.</li>
-        <li><b>The Vault</b>: points become actual rupees. 1 point = ₹2.5, cash in as a gift or UPI. The house always pays.</li>
-        <li><b>Once, in the footer</b>: press "link the shared notebook" so everything you do saves itself to our repo. Weekly mission code gets pushed to the repo, and <a href="scoreboard.html">the scoreboard</a> shows both solutions side by side, running live in the page.</li>
+        <li><b>Missions tab</b>: pick a problem, build it in Python on your machine, come back, press <b>"I built it"</b>, and attach proof. No proof, no points. I'm strict because I like winning fair.</li>
+        <li><b>The bar above</b> is the lifetime war. The <b>weekly battle card</b> is this week only: ship the most code, ship the best code, take the week. Loser lives one dare, written by the winner. Lose to me and find out.</li>
+        <li><b>Dares tab</b>: challenge me whenever you feel brave. Deadline, points on the table, clock ticking.</li>
+        <li><b>The Kitchen</b>: menu boring you? Cook your own mission and serve it to me. I dare you.</li>
+        <li><b>The Vault</b>: points become actual rupees. 1 point = ₹2.5, gift or straight UPI. The house always pays.</li>
+        <li><b>Once, in the footer</b>: press "Turn on auto-save" so everything saves itself to our repo. Push your weekly code and <a href="scoreboard.html">the scoreboard</a> runs both our solutions live, side by side, in public. Bring your best.</li>
       </ol>
     </details>
   </div>
@@ -262,7 +262,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">the weekly battle</div>
     <h2>This week's blood feud</h2>
-    <p class="sub">Points earned this week only. When the week closes, the winner writes one dare, the loser completes it. A ride, a treat, a whole day out planned by the loser: the winner's imagination is the only law. Signed, both of us, in commit history.</p>
+    <p class="sub">Ship the most code, ship the best code, take the week. Points keep count of the most; reading the scoreboard together settles the best. Then the winner writes one dare and the loser lives it: a ride, a treat, a whole planned day out. Signed, both of us, in commit history.</p>
     <div class="vgrid" style="margin-top:14px" id="week-stats"></div>
     <div class="btnrow" style="justify-content:center">
       <button class="btn danger" onclick="settleWeek()">⚖️ Close the week &amp; crown the winner</button>
@@ -270,29 +270,33 @@ section[id^=tab-]{animation:enter .3s ease}
   </div>
 
   <div class="card meme">
-    <div class="eyebrow">certified meme break</div>
+    <div class="eyebrow">certified meme break, doctor\u2019s orders</div>
     <img id="meme-img" alt="a meme, allegedly motivational" hidden>
     <div class="cap" id="meme-cap">summoning…</div>
-    <button class="btn ghost" onclick="memeBreak()">another one 🔁</button>
+    <button class="btn ghost" onclick="memeBreak()">ek aur 🔁</button>
   </div>
 
   <div class="card plan">
     <div class="eyebrow">this week's contract</div>
     <h2>When exactly are you coding?</h2>
-    <p class="sub">Write the exact day and time you'll code this week. Vague plans die, written ones survive, mostly because the other player will remind you. Forever.</p>
-    <br>
-    <input id="plan-input" placeholder='e.g. "Tue + Thu, 9pm, one mission minimum"' onchange="savePlan(this.value)">
+    <p class="sub">Tap your days, set your hour. Show up and I'll pretend I expected nothing less. Skip, and your phone hears about it by night. Those hours are spoken for now.</p>
+    <div class="chips" id="plan-days" style="margin:14px 0 4px"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+      <span class="sub">at</span>
+      <input id="plan-time" type="time" style="background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:var(--r-md);padding:8px 12px;font-family:var(--font-m);box-shadow:var(--neu-in)" onchange="savePlanTime(this.value)">
+    </div>
+    <p class="sub" id="plan-echo" style="margin-top:10px"></p>
   </div>
 
   <div class="card">
-    <div class="eyebrow">why this works · designed by a psychologist, on purpose</div>
+    <div class="eyebrow">why this works · I'm a psychologist. this playground plays fair, but it plays you.</div>
     <div class="psych">
-      <div><b>streaks</b>Your brain hates losing a streak about twice as much as it enjoys winning. So the streak protects itself. Keep it alive.</div>
-      <div><b>teach-back, +5</b>Explain your solved mission out loud to the rival, earn 5 extra points. Saying it aloud locks it into memory better than any re-reading. Old trick, works every time.</div>
-      <div><b>jackpots</b>Some missions randomly pay extra. You never know which one. That little "maybe" is exactly what makes games fun. Yes, it's working on you right now.</div>
-      <div><b>the contract</b>A plan with a day and a time actually happens. "I'll code more" never has, in recorded history. Write the time above.</div>
-      <div><b>GG notes</b>To claim a dare win, first say one honest good thing about the rival's work. Keeps the rivalry sharp and the friendship sharper.</div>
-      <div><b>real stakes</b>Points become real rupees. Lost weeks become real dares. Real stakes keep both of us honest.</div>
+      <div><b>streaks</b>Your brain hates losing a streak twice as much as it loves winning. I built the game on that. Keep it alive or explain yourself to your own neurons.</div>
+      <div><b>teach-back, +5</b>Explain your solved mission to me out loud, earn 5 extra. Saying it aloud welds it into memory better than re-reading ever will. Old trick. Works on everyone, even you.</div>
+      <div><b>jackpots</b>Some missions randomly pay extra and you never know which. That tiny "maybe" is why you'll keep coming back. You're welcome.</div>
+      <div><b>the contract</b>A plan with a day and an hour actually happens. "I'll code more" never has, in recorded history. Tap your days above. Attendance is being taken.</div>
+      <div><b>GG notes</b>Claiming a dare win costs one honest compliment about the other's work first. Keeps the rivalry sharp and the respect sharper. I will collect mine.</div>
+      <div><b>real stakes</b>Points become real rupees. Lost weeks become dares you live. Skin in the game, or it's just a to-do list with mood lighting.</div>
     </div>
   </div>
 </section>
@@ -302,7 +306,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">pick your poison</div>
     <h1>Missions</h1>
-    <p class="sub">Every mission hands you a problem, the skills it will demand, and where to hunt for them. Answers stay hidden on purpose: the hunting is the training. Toddlers learn to talk by listening and then talking, grammar shows up years later. Ladder runs first words → brainrot → grind → heists → god.</p>
+    <p class="sub">Each mission hands you a problem, the skills it demands, and where to hunt for them. Answers stay hidden on purpose, the hunting is the training. The ladder climbs first words → brainrot → grind → heists → god. I will be ahead of you on it, waving.</p>
     <br>
     <div class="chips" id="intent-chips"></div>
     <div id="quest-list"></div>
@@ -314,7 +318,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">beyond the menu</div>
     <h1>The Kitchen</h1>
-    <p class="sub">The built-in missions are the starter menu. Real ones cook their own: invent a project, price it in points, keep it on the menu for both of us, or plate it and serve it straight at the rival as a dare. House specials stay on the menu forever.</p>
+    <p class="sub">The built-in missions are the starter menu. Real ones cook their own: invent a project, price it in points, keep it on the menu for both of us, or plate it and serve it straight at me as a dare. Cook something I can't finish. I'll wait.</p>
     <br>
     <div class="form">
       <input id="f-title" placeholder="Name the dish, 'Thanos Snap for my downloads folder'">
@@ -337,7 +341,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">the maroon zone</div>
     <h1>Dares &amp; Debts</h1>
-    <p class="sub">Challenge the rival, set the stake, set the clock. Lose a challenge or break a week streak and you owe a forfeit, written by the winner, savored by the winner. Claiming a win costs one GG note: something genuinely good about their work. Appeals go to the maroon zone, where they are read aloud and laughed at.</p>
+    <p class="sub">Challenge me, set the stake, set the clock. Lose one, or break a week streak, and you owe a forfeit written by the winner, savored by the winner. Claiming a win costs one GG note: something genuinely good about the other's work. Appeals go to the maroon zone, where I read them aloud, beautifully.</p>
     <br>
     <div class="form">
       <input id="d-title" placeholder="Name the challenge, 'Build a worse alarm clock than mine'">
@@ -346,7 +350,7 @@ section[id^=tab-]{animation:enter .3s ease}
       <input id="d-when" type="datetime-local">
       <label for="d-pts">points on the table</label>
       <input id="d-pts" type="number" min="5" max="200" value="25">
-      <button class="btn danger" onclick="addDare()">Throw the gauntlet →</button>
+      <button class="btn danger" onclick="addDare()">Fek ke maar muh pe →</button>
     </div>
     <br>
     <div id="dare-list"></div>
@@ -361,7 +365,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">live from github</div>
     <h1>Repo Hunt</h1>
-    <p class="sub">Search the wild for real Python projects. Pick a victim. Turn it into a heist: read it, run it, upgrade it, or lovingly ruin it. Reading grown-up code is how toddlers learn to talk, by eavesdropping on adults.</p>
+    <p class="sub">Search the wild for real Python projects. Pick a victim, make it a heist: read it, run it, upgrade it, or lovingly ruin it. Reading grown-up code is eavesdropping on the adults, and we were raised on eavesdropping.</p>
     <br>
     <div class="search">
       <input id="hunt-q" placeholder="try: meme generator · discord bot · jarvis · habit tracker" onkeydown="if(event.key==='Enter')hunt()">
@@ -376,7 +380,7 @@ section[id^=tab-]{animation:enter .3s ease}
   <div class="card">
     <div class="eyebrow">paisa hi paisa hoga</div>
     <h1>The Vault</h1>
-    <p class="sub">1 point = ₹2.5. Cash in for a gift, the house funds up to ₹3,000 a pop, or take it straight to your account, the house settles by UPI. Debts from lost dares and broken streaks live here too. In maroon. Where they belong.</p>
+    <p class="sub">1 point = ₹2.5. Cash in for a gift, the house funds up to ₹3,000 a pop, or take it straight to your account by UPI. Earn it and I pay up, gracefully. Your debts live here too, in maroon, where I can admire them.</p>
     <br>
     <div class="vgrid" id="vault-stats"></div>
     <br>
@@ -491,7 +495,7 @@ git checkout -b fix/thing-i-noticed</pre></li>
   <div class="card" style="max-width:420px;text-align:center">
     <div class="eyebrow">first things first</div>
     <h2>Who are you?</h2>
-    <p class="sub">This device will remember you. Pick honestly, the rival always finds out, and the finding out is legendary.</p>
+    <p class="sub">This device will remember you. Pick honestly. I always find out, and the finding out is legendary.</p>
     <div class="btnrow" style="justify-content:center;margin-top:16px">
       <button class="btn" style="font-size:16px;padding:12px 26px" onclick="claimIdentity('aditi')">I'm Aditi</button>
       <button class="btn" style="font-size:16px;padding:12px 26px" onclick="claimIdentity('ayush')">I'm Ayush</button>
@@ -502,20 +506,20 @@ git checkout -b fix/thing-i-noticed</pre></li>
 <script>
 /* ═══════════ FLAVOR ═══════════ */
 const ROASTS=[
-  "Your last commit is old enough to say 'moye moye'. Just saying.",
-  "Bade bade repos mein aise chhote chhote commits hote rehte hain.",
-  "Gym: full attendance. Missions: witness protection.",
-  "25 din mein skill double. Scheme is live, participation is optional, regret is permanent.",
-  "Ye code nahi hai, dawai hai. Roz lene ka.",
-  "Nice streak. Coding today would keep it that way. Bas keh rahi hoon.",
-  "Beta, tumse na ho payega, said everyone the leaderboard has ever humbled. Prove the aunty wrong.",
-  "Kitne commit the? ... Poore hafte mein, sirf itne?",
-  "Confidence without commits is just cardio for the ego.",
-  "Losers explain. Winners git push. Mogambo sirf push dekh ke khush hua.",
-  "Python easy hai. Consistency ka syllabus alag hai. Padh lo.",
-  "That deadline heard 'bas almost done hai' and started laughing in Hera Pheri.",
-  "Pushpa bhi daily rukta nahi tha. Flower nahi, fire. Commit karo.",
-  "Somewhere a for-loop you promised to write is filing a missing person report.",
+  "Your last commit is old enough to say moye moye. I counted.",
+  "Bade bade repos mein itne chhote commits? From you? Disappointing and adorable.",
+  "Gym: full attendance. Missions: witness protection. Pick a personality, hero.",
+  "25 din mein skill double. My scheme, your sweat. You agreed the day you cloned.",
+  "Ye code nahi hai, dawai hai. Roz lene ka. Doctor's orders. The doctor is me.",
+  "Nice streak. It would be a shame if you kept impressing me. Do it anyway.",
+  "Beta tumse na ho payega, said nobody who's watched you actually try. So try.",
+  "Kitne commit the? Poore hafte mein? I've seen you fight harder for the last bite.",
+  "Confidence without commits is cardio for the ego. And I've seen your cardio.",
+  "Losers explain. Winners git push. You look better winning, just saying.",
+  "Python easy hai. Consistency ka syllabus alag hai. Lucky you, I grade on effort.",
+  "That deadline heard 'almost done' and laughed. I just raised an eyebrow. Worse.",
+  "Pushpa bhi roz rukta nahi tha. Flower nahi, fire. Show me the fire.",
+  "Somewhere a for-loop you promised me is filing a missing person report.",
 ];
 const RANKS=["Toddler","Babbler","Talker","Smooth Talker","Storyteller","Silver Tongue","God of Python"];
 const rankOf=p=>RANKS[Math.min(RANKS.length-1,Math.floor(p/80))];
@@ -590,7 +594,7 @@ const BLANK={lastUpdated:0,players:{
 let S=JSON.parse(localStorage.getItem("sts")||"null")||structuredClone(BLANK);
 S.forged=S.forged||[];for(const p of Object.values(S.players))p.ava=p.ava||"🙂";
 S.week=S.week||{aditi:0,ayush:0};
-function earn(gain){S.players[me].pts+=gain;S.week[me]=(S.week[me]||0)+gain;}
+function earn(gain){S.players[me].pts+=gain;S.week[me]=(S.week[me]||0)+gain;S.players[me].lastEarned=new Date().toISOString().slice(0,10);}
 function renderWeek(){
   const a=S.week.aditi||0,b=S.week.ayush||0;
   document.getElementById("week-stats").innerHTML=`
@@ -684,6 +688,7 @@ async function pullNotebook(){
   }
 }
 pullNotebook();
+setInterval(pullNotebook,300000);
 
 function save(stamp=true){if(stamp)S.lastUpdated=Date.now();localStorage.setItem("sts",JSON.stringify(S));pushSoon();}
 function toast(msg,crit=false){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show"+(crit?" crit":"");setTimeout(()=>t.className="toast",2600);}
@@ -717,6 +722,7 @@ function rankCheck(before,p){
 }
 const other=()=>me==="aditi"?"ayush":"aditi";
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const proofHtml=t=>/^https?:\/\//.test(t)?`<a href="${esc(t)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
 
 /* ═══════════ MEMES (Tenor's free tap) ═══════════ */
 async function fetchGif(q){
@@ -770,16 +776,31 @@ function renderStandings(){
   document.getElementById("tug-a").style.width=(total?Math.round(a.pts/total*100):50)+"%";
   document.getElementById("verdict").textContent=
     a.pts===b.pts?"Dead even. Statistically suspicious. Someone push code.":
-    (a.pts>b.pts?"aditi leads, for now. ayush, the comeback montage starts the second you open a terminal.":
-                 "ayush leads. aditi, avenge yourself, the montage music is already playing.");
-  document.getElementById("plan-input").value=S.players[me].plan||"";
+    (a.pts>b.pts?"aditi leads, for now. ayush, impress me. The montage music is already playing.":
+                 "ayush leads. He's smiling somewhere. aditi, go wipe it off.");
+  renderPlan();
 }
 async function setAva(who){
   if(who!==me)return toast("Cute try. Reinvention is a solo sport, do your own.");
   const v=await ask("Pick your face, any emoji (or two):",{input:true,value:S.players[me].ava,yes:"This is me now"});
-  if(v){S.players[me].ava=v.slice(0,4);save();renderStandings();toast("New face accepted. The old you is officially history.");}
+  if(v){S.players[me].ava=v.slice(0,4);save();renderStandings();toast("New face accepted. The old you is history. I make no promises about missing it.");}
 }
-function savePlan(v){S.players[me].plan=v;save();toast("Contract signed. Witnessed. Binding. Wakeel bhi kuch nahi kar payega.");}
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function renderPlan(){
+  const p=S.players[me];p.planDays=p.planDays||[];
+  document.getElementById("plan-days").innerHTML=DAYS.map((d,i)=>
+    `<button class="${p.planDays.includes(i)?'on':''}" onclick="togglePlanDay(${i})">${d}</button>`).join("");
+  document.getElementById("plan-time").value=p.planTime||"";
+  document.getElementById("plan-echo").textContent=p.planDays.length?
+    `Signed: ${p.planDays.map(i=>DAYS[i]).join(" + ")}${p.planTime?" at "+p.planTime:""}. No lawyer can save you from me now.`:
+    "Nothing signed yet. Scared? Bold of you to let me see that.";
+}
+function togglePlanDay(i){
+  const p=S.players[me];p.planDays=p.planDays||[];
+  p.planDays=p.planDays.includes(i)?p.planDays.filter(x=>x!==i):[...p.planDays,i].sort();
+  save();renderPlan();
+}
+function savePlanTime(v){S.players[me].planTime=v;save();renderPlan();toast("Hour locked. I'll be taking attendance personally.");}
 
 function renderIntents(){
   const chips=Object.entries(INTENTS).map(([k,i])=>
@@ -805,6 +826,7 @@ function renderQuests(){
           <p style="margin-top:10px;font-family:var(--font-m);font-size:11px;color:var(--steel);text-transform:uppercase;letter-spacing:.1em">what it'll take</p>
           <ul class="need">${(q.need||[]).map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
           <div class="learnhint">📍 where to hunt: ${esc(q.learn||"nowhere. wing it. that's the mission.")}</div>
+          ${done&&(p.proofs||{})[q.id]?`<div class="learnhint">🧾 receipt: ${proofHtml((p.proofs||{})[q.id])}</div>`:""}
           <div class="btnrow">
             <button class="btn" ${done?"disabled":""} onclick="doneQuest('${q.id}',${q.pts})">${done?"Conquered ✓":"I built it → claim the glory"}</button>
             <button class="btn ghost" ${!done||taught?"disabled":""} onclick="teachBack('${q.id}')">${taught?"Taught ✓":"Explained it out loud to the rival (+5)"}</button>
@@ -812,17 +834,20 @@ function renderQuests(){
         </div></div>`;
     }).join(""):'<p class="sub">The stove is cold. Go light it, first dish gets cooked in The Kitchen tab.</p>');
 }
-function doneQuest(id,pts){
+async function doneQuest(id,pts){
   const p=S.players[me];if(p.done.includes(id))return;
+  const proof=await ask("Proof or it didn't happen. Paste the GitHub link to your pushed file, or tell me exactly what to run on your machine.",{input:true,yes:"Submit proof"});
+  if(!proof)return toast("No proof, no points. Strict, yes. I like my wins clean.");
   const before=p.pts;p.done.push(id);
+  p.proofs=p.proofs||{};p.proofs[id]=proof;
   const crit=Math.random()<.25,gain=pts+(crit?5:0);
   earn(gain);bumpStreak(p);save();
   xpFloat("+"+gain+" points",window.event);if(crit){confetti(45);cheerGif();}
   renderAll();
-  toast(crit?`JACKPOT, +${gain} points. The universe tipped you. Ask zero questions.`:`+${gain} points. Honor system, and the rival audits like it's a hobby.`,crit);
+  toast(crit?`JACKPOT, +${gain} points. The universe flirts with you today. It has taste.`:`+${gain} points. Noted. Mildly impressed, deeply suspicious.`,crit);
   rankCheck(before,p);
 }
-function teachBack(id){const p=S.players[me];if(p.taught.includes(id))return;const before=p.pts;p.taught.push(id);earn(5);save();xpFloat("+5 points",window.event);renderAll();toast("+5 points. Saying it out loud hits different, na?");rankCheck(before,p);}
+function teachBack(id){const p=S.players[me];if(p.taught.includes(id))return;const before=p.pts;p.taught.push(id);earn(5);save();xpFloat("+5 points",window.event);renderAll();toast("+5 points. Saying it out loud hits different, na? Told you.");rankCheck(before,p);}
 function bumpStreak(p){
   const now=new Date(),wk=now.getFullYear()+"-w"+Math.ceil(((now-new Date(now.getFullYear(),0,1))/864e5+1)/7);
   if(p.lastDay!==wk){p.streak+=1;p.lastDay=wk;}
@@ -851,7 +876,7 @@ function renderForge(){
       <div class="dare" style="border-left-color:var(--green)">
         <div class="meta">cooked by ${q.by} · <span class="stake">${q.pts} points</span></div>
         <b>${esc(q.t)}</b><p class="sub">${esc(q.brief)}</p>
-        <div class="btnrow"><button class="btn ghost" onclick="hurlForged('${q.id}')">serve this to the rival →</button></div>
+        <div class="btnrow"><button class="btn ghost" onclick="hurlForged('${q.id}')">thali mein sajaa ke bhejo →</button></div>
       </div>`).join(""):'<p class="sub">Empty menu. The presets are fine, and "fine" has impressed exactly nobody, ever.</p>';
 }
 function hurlForged(id){
@@ -865,19 +890,25 @@ function addDare(){
   const t=document.getElementById("d-title").value.trim(),d=document.getElementById("d-dare").value.trim(),
         when=document.getElementById("d-when").value,
         pts=+document.getElementById("d-pts").value||25;
-  if(!t)return toast("A gauntlet needs a name.");
+  if(!t)return toast("Bina naam ke kya fekoge? Name it first.");
   S.challenges.unshift({id:"c"+Date.now(),from:me,to:other(),title:t,dare:d,pts,when,status:"open",note:""});
   save();renderDares();
   document.getElementById("d-title").value="";document.getElementById("d-dare").value="";document.getElementById("d-when").value="";
-  toast(`Gauntlet thrown at ${other()}. Takebacks expired in 1997.`);
+  toast(`Fek diya, seedha ${other()} ke muh pe. Takebacks expired in 1997.`);
 }
 function clockLine(c){
   if(!c.when||c.status!=="open")return"";
-  const ms=new Date(c.when)-new Date(),days=Math.ceil(ms/864e5);
-  if(ms<0)return `<div class="clock late">⏰ overdue. the clock saw everything and it is judging.</div>`;
-  if(days<=1)return `<div class="clock late">⏰ due today. sweat is a valid IDE.</div>`;
-  return `<div class="clock">⏳ ${days} days on the clock, ticking politely, for now.</div>`;
+  return `<div class="clock" data-when="${c.when}">⏳ …</div>`;
 }
+setInterval(()=>{
+  document.querySelectorAll(".clock[data-when]").forEach(el=>{
+    const ms=new Date(el.dataset.when)-Date.now();
+    if(ms<=0){el.classList.add("late");el.textContent="⏰ overdue. the clock saw everything. so did I.";return;}
+    const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),sec=Math.floor(ms%6e4/1e3);
+    el.classList.toggle("late",ms<864e5);
+    el.textContent=`⏳ ${d}d ${h}h ${m}m ${sec}s. tick tock, hero.`;
+  });
+},1000);
 function renderDares(){
   document.getElementById("dare-list").innerHTML=S.challenges.length?S.challenges.map(c=>`
     <div class="dare ${c.status==='won'?'won':''}">
@@ -887,7 +918,7 @@ function renderDares(){
       ${clockLine(c)}
       ${c.status==="open"&&c.to===me?`<div class="btnrow">
         <button class="btn" onclick="claimDare('${c.id}')">Done. Pay me ${c.pts} points.</button>
-        <button class="btn danger" onclick="forfeitDare('${c.id}')">I failed. Write my punishment.</button></div>`:""}
+        <button class="btn danger" onclick="forfeitDare('${c.id}')">Nahi hua. Likho punishment, jaldi.</button></div>`:""}
       ${c.note?`<div class="ggnote">GG note: “${esc(c.note)}”</div>`:""}
     </div>`).join(""):'<p class="sub">All quiet. Suspiciously quiet. Someone start something.</p>';
 }
@@ -898,7 +929,7 @@ async function claimDare(id){
   const before=S.players[me].pts;
   c.status="won";c.note=note;earn(c.pts);bumpStreak(S.players[me]);save();
   confetti(55);cheerGif();renderAll();
-  toast(`+${c.pts} points. Victory with class. Disgusting. Well done.`);
+  toast(`+${c.pts} points. Victory with class. Disgusting. Do it again.`);
   rankCheck(before,S.players[me]);
 }
 function forfeitDare(id){

@@ -1,41 +1,48 @@
-"""The daily nudge. The repo checks on both of us and says something about it.
+"""The daily check-in. The repo takes attendance and your phone hears about it.
 
-Runs on GitHub's own machines every evening (see .github/workflows/nudge.yml),
-reads the shared notebook, and pushes a note to each player's phone via ntfy.sh.
+Runs on GitHub's machines every evening (see .github/workflows/nudge.yml),
+reads the shared notebook, and pushes a note to each player via ntfy.sh.
 
 Phone setup, once, two minutes:
 1. Install the ntfy app (iOS/Android), or open ntfy.sh in a browser.
-2. Subscribe to your topic below. Pick weird topic names, they're public radio
+2. Subscribe to your topic below. Pick weird names, topics are public radio
    frequencies: whoever knows the name can listen. Weird = private enough.
 3. Done. The repo now knows where you live (spiritually).
 
-Standard library only. Reading this file is, of course, also a mission:
-json, datetime, urllib, and the ancient art of minding someone's business.
+Standard library only. Reading this file is, obviously, also a mission.
 """
 
 import json
 import urllib.request
-from datetime import date
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 TOPICS = {
     "aditi": "speak-then-spell-cat-overlord",
     "ayush": "speak-then-spell-moai-man",
 }
 
-QUIET_ROASTS = [
-    "Zero points today. The streak is writing its will.",
-    "The terminal misses you. It said so. In writing.",
+MISSED_CONTRACT = [
+    "You picked today yourself. The contract remembers. So do I.",
+    "Promised day, empty ledger. Ye baat kuch hazam nahi hui.",
+    "Today was YOUR day. The terminal waited. It deserves better.",
+]
+QUIET = [
+    "Zero points today. The streak is drafting its will.",
     "Aaj nahi toh kab? The leaderboard already knows your answer.",
-    "One mission. Twenty minutes. Or lose the week and owe a whole night out.",
-    "Your rival's commit graph is greener. Bas keh raha hoon.",
+    "One mission. Twenty minutes. Or lose the week and owe a whole day out.",
 ]
-
-AHEAD_PRAISE = [
+AHEAD = [
     "You lead the week. Defend it like it owes you money.",
-    "Winning. Insufferable and correct, keep going.",
-    "Top of the board. The dare you'll write is already smiling.",
+    "Winning. Insufferable and correct. Keep going.",
+    "Top of the board. The dare you get to write is already smiling.",
 ]
+KEPT = [
+    "Contract honored today. Noted, witnessed, quietly respected.",
+    "Showed up on your promised day. The clock has nothing on you. Today.",
+]
+OVERDUE = "A dare is past its deadline: {title}. The clock saw everything. So did the ledger."
 
 
 def send(topic: str, title: str, message: str) -> None:
@@ -49,15 +56,35 @@ def send(topic: str, title: str, message: str) -> None:
 
 def main() -> None:
     state = json.loads(Path("docs/state.json").read_text())
+    now = datetime.now(ZoneInfo("Asia/Kolkata"))
+    today = now.date().isoformat()
+    weekday = (now.weekday() + 1) % 7  # JS-style: Sunday = 0
+    seed = now.date().toordinal()
     week = state.get("week", {})
-    seed = date.today().toordinal()
+
     for player, topic in TOPICS.items():
+        p = state["players"].get(player, {})
         mine = week.get(player, 0)
-        theirs = max(v for k, v in week.items() if k != player) if len(week) > 1 else 0
-        if mine > theirs:
-            note = AHEAD_PRAISE[seed % len(AHEAD_PRAISE)]
+        theirs = max((v for k, v in week.items() if k != player), default=0)
+        promised = weekday in (p.get("planDays") or [])
+        showed = p.get("lastEarned") == today
+        late = [
+            c for c in state.get("challenges", [])
+            if c.get("to") == player and c.get("status") == "open"
+            and c.get("when") and c["when"][:10] < today
+        ]
+
+        if late:
+            note = OVERDUE.format(title=late[0].get("title", "unnamed"))
+        elif promised and not showed:
+            note = MISSED_CONTRACT[seed % len(MISSED_CONTRACT)]
+        elif promised and showed:
+            note = KEPT[seed % len(KEPT)]
+        elif mine > theirs:
+            note = AHEAD[seed % len(AHEAD)]
         else:
-            note = QUIET_ROASTS[seed % len(QUIET_ROASTS)]
+            note = QUIET[seed % len(QUIET)]
+
         send(topic, f"speak-then-spell · {mine} pts this week", note)
         print(f"nudged {player} → {topic}")
 
