@@ -238,7 +238,7 @@ section[id^=tab-]{animation:enter .3s ease}
         <li><b>Dares tab</b>: challenge me whenever you feel brave. Deadline, points on the table, clock ticking.</li>
         <li><b>The Kitchen</b>: menu boring you? Cook your own mission and serve it to me. I dare you.</li>
         <li><b>The Vault</b>: points become actual rupees. 1 point = ₹2.5, gift or straight UPI. The house always pays.</li>
-        <li><b>Once, in the footer</b>: press "Turn on auto-save" so everything saves itself to our repo. Push your weekly code and <a href="scoreboard.html">the scoreboard</a> runs both our solutions live, side by side, in public. Bring your best.</li>
+        <li><b>First, non-negotiable</b>: turn on auto-save (footer button, one-time key). Missions stay locked until sync is on, house rules. Then everything you do saves itself to our repo, and <a href="scoreboard.html">the scoreboard</a> runs both our solutions live, side by side, in public. Bring your best.</li>
         <li><b>Fine Print tab</b>: all the deep magic lives there. How we push code, how I built this whole place, how to heist open source, the get-rich arc. Padh lena. Exam hoga.</li>
       </ol>
     </details>
@@ -603,6 +603,7 @@ function renderWeek(){
     <div class="stat"><div class="big">${b}</div><div class="lab">ayush, this week</div></div>`;
 }
 async function settleWeek(){
+  if(syncRequired())return;
   const a=S.week.aditi||0,b=S.week.ayush||0;
   if(a===0&&b===0)return toast("Close an empty week? Bold. Earn something first, both of you.");
   if(a===b){toast("A tie. The universe refuses to pick a favorite. Week rolls on.");return;}
@@ -623,6 +624,13 @@ function claimIdentity(who){
   document.getElementById("tour").open=true;
   renderAll();
   toast(`Welcome, ${who}. This device knows you now. Very committed of you.`);
+  if(!notebookKey)setTimeout(linkNotebook,900);
+}
+function syncRequired(){
+  if(notebookKey)return false;
+  toast("Pehle auto-save on karo, hero. Bina sync ke points ginti mein nahi aate.");
+  setTimeout(linkNotebook,700);
+  return true;
 }
 
 /* themed stand-in for prompt() and confirm(), house colors only */
@@ -836,6 +844,7 @@ function renderQuests(){
     }).join(""):'<p class="sub">The stove is cold. Go light it, first dish gets cooked in The Kitchen tab.</p>');
 }
 async function doneQuest(id,pts){
+  if(syncRequired())return;
   const p=S.players[me];if(p.done.includes(id))return;
   const proof=await ask("Proof or it didn't happen. Paste the GitHub link to your pushed file, or tell me exactly what to run on your machine.",{input:true,yes:"Submit proof"});
   if(!proof)return toast("No proof, no points. Strict, yes. I like my wins clean.");
@@ -848,7 +857,7 @@ async function doneQuest(id,pts){
   toast(crit?`JACKPOT, +${gain} points. The universe flirts with you today. It has taste.`:`+${gain} points. Noted. Mildly impressed, deeply suspicious.`,crit);
   rankCheck(before,p);
 }
-function teachBack(id){const p=S.players[me];if(p.taught.includes(id))return;const before=p.pts;p.taught.push(id);earn(5);save();xpFloat("+5 points",window.event);renderAll();toast("+5 points. Saying it out loud hits different, na? Told you.");rankCheck(before,p);}
+function teachBack(id){if(syncRequired())return;const p=S.players[me];if(p.taught.includes(id))return;const before=p.pts;p.taught.push(id);earn(5);save();xpFloat("+5 points",window.event);renderAll();toast("+5 points. Saying it out loud hits different, na? Told you.");rankCheck(before,p);}
 function bumpStreak(p){
   const now=new Date(),wk=now.getFullYear()+"-w"+Math.ceil(((now-new Date(now.getFullYear(),0,1))/864e5+1)/7);
   if(p.lastDay!==wk){p.streak+=1;p.lastDay=wk;}
@@ -924,6 +933,7 @@ function renderDares(){
     </div>`).join(""):'<p class="sub">All quiet. Suspiciously quiet. Someone start something.</p>';
 }
 async function claimDare(id){
+  if(syncRequired())return;
   const c=S.challenges.find(x=>x.id===id);
   const note=await ask("House rule: one honest GG note about "+c.from+"'s challenge or code. Then the payday.",{input:true,yes:"Sent, pay me"});
   if(!note)return toast("GG note first, payday second. House rules, framed and hung.");
