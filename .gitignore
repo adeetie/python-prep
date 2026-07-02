@@ -2,3 +2,23 @@ __pycache__/
 *.pyc
 .DS_Store
 *.pdf
+
+# machine things and secrets, never public
+.env
+.env.*
+*.key
+*.pem
+*.token
+naclenv/
+venv/
+.venv/
+
+# personal scratch space, stays on this machine only
+private/
+personal/
+notes/
+scratch/
+drafts/
+journal*
+diary*
+*.private.*
