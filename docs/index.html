@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>speak-then-spell</title>
+<style>
+  :root { --ink:#1a1a1a; --paper:#faf7f2; --accent:#0e7c66; --card:#ffffff; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Georgia, 'Times New Roman', serif;
+         background:var(--paper); color:var(--ink); line-height:1.6; }
+  header { padding:3rem 1.5rem 2rem; text-align:center; }
+  header h1 { font-size:2.2rem; margin:0; }
+  header p { color:#666; font-style:italic; }
+  main { max-width:1100px; margin:0 auto; padding:0 1.5rem 4rem; }
+  .week { background:var(--card); border:1px solid #e5e0d8; border-radius:12px;
+          padding:1.5rem; margin-bottom:2rem; }
+  .week h2 { margin-top:0; color:var(--accent); }
+  .solutions { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+               gap:1rem; }
+  .player { min-width:0; }
+  .player h3 { margin:0.5rem 0; font-family:-apple-system, sans-serif;
+               font-size:0.9rem; text-transform:uppercase; letter-spacing:0.08em; }
+  pre { background:#0f1a17; color:#d7e6e0; padding:1rem; border-radius:8px;
+        overflow-x:auto; font-size:0.8rem; max-height:480px; }
+  .empty { color:#999; font-style:italic; padding:1rem;
+           border:2px dashed #ddd6ca; border-radius:8px; text-align:center; }
+  footer { text-align:center; color:#999; padding:2rem; font-size:0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>speak-then-spell 🗣️→🔤</h1>
+  <p>learn to speak Python before learning its alphabet</p>
+</header>
+<main>
+<section class="week"><h2>Week 01 The Walrus Hunt</h2><div class="solutions"><div class="player"><h3>aditi</h3><div class="empty">not pushed yet… 👀</div></div><div class="player"><h3>buddy</h3><div class="empty">not pushed yet… 👀</div></div></div></section></main>
+<footer>two players, one repo, no peeking</footer>
+</body>
+</html>

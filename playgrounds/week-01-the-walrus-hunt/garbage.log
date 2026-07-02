@@ -1,0 +1,8 @@
+2026-07-01 14:32:07 GET /api/users 200 123ms
+this line is definitely not a log entry
+2026-07-01 14:32:09 POST /api/login 200 87ms
+2026-07-01 14:32:11 GET /api/feed 200 not-a-number
+2026-07-01 corrupted
+2026-07-01 14:32:15 GET /api/users/42 404 12ms
+
+2026-07-01 14:32:18 POST /api/upload 500 902ms
