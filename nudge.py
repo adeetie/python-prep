@@ -13,6 +13,7 @@ Standard library only. Reading this file is, obviously, also a mission.
 """
 
 import json
+import urllib.parse
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -21,6 +22,14 @@ from zoneinfo import ZoneInfo
 TOPICS = {
     "aditi": "speak-then-spell-cat-overlord",
     "ayush": "speak-then-spell-moai-man",
+}
+
+# Optional WhatsApp via callmebot.com, free for personal use. One-time setup each:
+# save +34 644 71 81 99 as a contact, WhatsApp it "I allow callmebot to send me messages",
+# it replies with your apikey. Fill in below. Empty = skipped, ntfy still fires.
+WHATSAPP = {
+    "aditi": {"phone": "", "apikey": ""},
+    "ayush": {"phone": "", "apikey": ""},
 }
 
 MISSED_CONTRACT = [
@@ -43,6 +52,11 @@ KEPT = [
     "Showed up on your promised day. The clock has nothing on you. Today.",
 ]
 OVERDUE = "A dare is past its deadline: {title}. The clock saw everything. So did the ledger."
+
+
+def send_whatsapp(phone: str, apikey: str, message: str) -> None:
+    q = urllib.parse.urlencode({"phone": phone, "text": message, "apikey": apikey})
+    urllib.request.urlopen(f"https://api.callmebot.com/whatsapp.php?{q}", timeout=15)
 
 
 def send(topic: str, title: str, message: str) -> None:
@@ -86,6 +100,12 @@ def main() -> None:
             note = QUIET[seed % len(QUIET)]
 
         send(topic, f"speak-then-spell · {mine} pts this week", note)
+        wa = WHATSAPP.get(player, {})
+        if wa.get("phone") and wa.get("apikey"):
+            try:
+                send_whatsapp(wa["phone"], wa["apikey"], f"speak-then-spell · {mine} pts this week · {note}")
+            except Exception as e:
+                print(f"whatsapp skipped for {player}: {e}")
         print(f"nudged {player} → {topic}")
 
 
